@@ -63,25 +63,14 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                 for y in 0..16 {
                     for x in 0..16 {
                         let mut transform = Transform::default();
-
-
-                        let mut rng = rand::thread_rng();
-                        let float: f32 = rng.gen();
-                        let sprite_id: usize = {
-                            let r = (float * 10.).round() as usize;
-                            if r > 0 {0}
-                            else {1}
-                        };
-
-                        println!("{}", sprite_id);
+                        let tile_x = chunk_comp.x * 512 + x * 32;
+                        let tile_y = chunk_comp.y * 512 + y * 32;
 
                         let sprite = SpriteRender {
-                            sprite_sheet: resources.world_sprites[sprite_id].clone(),
+                            sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))].clone(),
                             sprite_number: 0,
                         };
 
-                        let tile_x = chunk_comp.x * 512 + x * 32;
-                        let tile_y = chunk_comp.y * 512 + y * 32;
                         transform.set_translation_xyz(Float::from(tile_x as f32), Float::from(tile_y as f32), 0.);
 
                         entities.build_entity()
@@ -93,5 +82,16 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
             }
         }
     }
+}
 
+fn generate_tile(pos: (i32, i32)) -> usize {
+    let mut rng = rand::thread_rng();
+    let float: f32 = rng.gen();
+    let sprite_id: usize = {
+        let r = (float * 1.).round() as usize;
+        if r > 0 {0}
+        else {1}
+    };
+
+    sprite_id
 }

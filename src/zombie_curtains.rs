@@ -45,7 +45,7 @@ impl SimpleState for ZombieCurtains {
         
         let world_sprites = vec![
             load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("grass").to_string_lossy().to_string(), "tile".to_string()),
-            load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("flower").to_string_lossy().to_string(), "tile".to_string()),
+            load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("grass2").to_string_lossy().to_string(), "tile".to_string()),
             ];
         
         world.add_resource(WorldResources {
