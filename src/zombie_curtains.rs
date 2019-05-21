@@ -37,12 +37,9 @@ impl SimpleState for ZombieCurtains {
 
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
-        world.register::<CameraOrtho>();
+        
         init_camera(world);
 
-        world.register::<Chunk>();
-
-        world.register::<GenerateChunk>();
         
         let world_sprites = vec![
             load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("grass").to_string_lossy().to_string(), "tile".to_string()),
@@ -107,7 +104,6 @@ fn init_camera(world: &mut World) {
     
     use crate::editor_systems::MoveComp;
     // Editor movement
-    world.register::<MoveComp>();
     
     world
         .create_entity()

@@ -1,4 +1,5 @@
 use amethyst::error::Error;
+use amethyst::utils::ortho_camera;
 use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder};
 
 
@@ -28,6 +29,7 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
             "game_chunk_generator",
             &[]
         );
+        builder.add(ortho_camera::CameraOrthoSystem, "camera_ortho_system", &[]);
         Ok(())
     }
 }
