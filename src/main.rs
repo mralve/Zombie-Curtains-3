@@ -50,8 +50,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with(CameraOrthoSystem, "orthographic_camera", &[])
-        .with(systems::ChunkGenerator, "Chunk Generator", &[]);
+        .with(systems::ChunkGenerator, "Chunk Generator", &[])
+        .with(CameraOrthoSystem, "orthographic_camera", &[]);
         
 
     let mut game = Application::build("./", ZombieCurtains)?

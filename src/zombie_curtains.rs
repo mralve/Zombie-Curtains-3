@@ -22,14 +22,15 @@ use amethyst::utils::ortho_camera::*;
 
 pub struct ZombieCurtains;
 
-pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / 20.;
-pub const CAMERA_SCALE_WIDTH: f32 = 1920. / 20.;
-
 pub struct WorldResources {
     pub world_sprites: SpriteSheetHandle,
 }
 
 use crate::systems::*;
+
+pub const CAMERA_ZOOM: f32 = 2.5;
+pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / CAMERA_ZOOM;
+pub const CAMERA_SCALE_WIDTH: f32 = 1920. / CAMERA_ZOOM;
 
 impl SimpleState for ZombieCurtains {
 
@@ -41,7 +42,7 @@ impl SimpleState for ZombieCurtains {
         world.register::<Chunk>();
         world.register::<GenerateChunk>();
 
-        let world_sprites = load_sprite_sheet(world, "resources\\textures\\world_sprites".to_string());
+        let world_sprites = load_sprite_sheet(world, "resources\\textures\\grass".to_string());
         
         world.add_resource(WorldResources {
             world_sprites: world_sprites.clone(),
@@ -50,6 +51,19 @@ impl SimpleState for ZombieCurtains {
         world.create_entity()
             .with(GenerateChunk::new((0, 0)))
             .build();
+
+        world.create_entity()
+            .with(GenerateChunk::new((-1, 0)))
+            .build();
+
+        world.create_entity()
+            .with(GenerateChunk::new((0, -1)))
+            .build();
+
+        world.create_entity()
+            .with(GenerateChunk::new((-1, -1)))
+            .build();
+            
 
         let sprite_render = SpriteRender {
             sprite_sheet: world_sprites, 
@@ -84,10 +98,10 @@ fn init_camera(world: &mut World) {
     let mut transform = Transform::default();
     let mut camera_ortho = CameraOrtho::normalized(CameraNormalizeMode::Contain);
     camera_ortho.world_coordinates = CameraOrthoWorldCoordinates {
-        left: 0.,
-        right: CAMERA_SCALE_WIDTH,
-        bottom: 0.,
-        top: CAMERA_SCALE_HEIGHT,
+        left: -CAMERA_SCALE_WIDTH/2.,
+        right: CAMERA_SCALE_WIDTH/2.,
+        bottom: -CAMERA_SCALE_HEIGHT/2.,
+        top: CAMERA_SCALE_HEIGHT/2.,
     };
 
     transform.set_translation_z(2.0);
@@ -95,12 +109,12 @@ fn init_camera(world: &mut World) {
         .create_entity()
         .with(Camera::from(Projection::orthographic(
             0.0,
-            crate::WIDTH * 0.5,
+            crate::WIDTH * 0.32 * 1.5,
             0.0,
-            crate::HEIGHT * 0.5,
+            crate::HEIGHT * 0.32 * 1.5,
         )))
-        .with(camera_ortho)
         .with(transform)
+        .with(camera_ortho)
         .build();
 }
 

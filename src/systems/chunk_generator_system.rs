@@ -60,12 +60,10 @@ impl<'s> System<'s> for ChunkGenerator {
                 chunk_comp.generated = true;
                 for y in 0..16 {
                     for x in 0..16 {
-                        let sprite_id = 2;
-
                         let mut transform = Transform::default();
                         let sprite = SpriteRender {
                             sprite_sheet: resources.world_sprites.clone(),
-                            sprite_number: sprite_id,
+                            sprite_number: 0,
                         };
                         
                         let tile_x = chunk_comp.x * 512 + x * 32;
