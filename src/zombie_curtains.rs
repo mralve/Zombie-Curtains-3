@@ -113,7 +113,7 @@ fn init_camera(world: &mut World) {
 
     transform.set_translation_z(2.0);
 
-    use crate::editor_systems::MoveComp;
+    use crate::editor_systems::{MoveComp, VelSlideComp};
     // Editor movement
 
     world
@@ -125,6 +125,7 @@ fn init_camera(world: &mut World) {
             crate::HEIGHT * 0.32 * 1.5,
         )))
         .with(MoveComp::new())
+        .with(VelSlideComp::new())
         .with(transform)
         .with(camera_ortho)
         .build();
