@@ -1,7 +1,7 @@
 use amethyst::core::Float;
+use amethyst::core::Transform;
 use amethyst::ecs::prelude::*;
 use amethyst::ecs::NullStorage;
-use amethyst::core::Transform;
 use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
 
 use crate::zombie_curtains::WorldResources;
@@ -14,9 +14,7 @@ pub struct Chunk {
 
 impl Chunk {
     pub fn new() -> Chunk {
-        Chunk {
-            tile_start_id: 0,
-        }
+        Chunk { tile_start_id: 0 }
     }
 }
 
@@ -56,7 +54,10 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
         WriteStorage<'s, SpriteRender>,
     );
 
-    fn run(&mut self, (mut chunk, entities, resources, mut transforms, mut sprites): Self::SystemData) {
+    fn run(
+        &mut self,
+        (mut chunk, entities, resources, mut transforms, mut sprites): Self::SystemData,
+    ) {
         for chunk_comp in (&mut chunk).join() {
             if !chunk_comp.generated {
                 chunk_comp.generated = true;
@@ -67,13 +68,19 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         let tile_y = chunk_comp.y * 512 + y * 32;
 
                         let sprite = SpriteRender {
-                            sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))].clone(),
+                            sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))]
+                                .clone(),
                             sprite_number: 0,
                         };
 
-                        transform.set_translation_xyz(Float::from(tile_x as f32), Float::from(tile_y as f32), 0.);
+                        transform.set_translation_xyz(
+                            Float::from(tile_x as f32),
+                            Float::from(tile_y as f32),
+                            0.,
+                        );
 
-                        entities.build_entity()
+                        entities
+                            .build_entity()
                             .with(transform, &mut transforms)
                             .with(sprite, &mut sprites)
                             .build();
@@ -89,8 +96,11 @@ fn generate_tile(pos: (i32, i32)) -> usize {
     let float: f32 = rng.gen();
     let sprite_id: usize = {
         let r = (float * 1.).round() as usize;
-        if r > 0 {0}
-        else {1}
+        if r > 0 {
+            0
+        } else {
+            1
+        }
     };
 
     sprite_id

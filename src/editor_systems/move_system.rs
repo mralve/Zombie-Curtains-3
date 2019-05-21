@@ -1,8 +1,8 @@
+use amethyst::core::timing::Time;
 use amethyst::core::Float;
+use amethyst::core::Transform;
 use amethyst::ecs::prelude::*;
 use amethyst::ecs::NullStorage;
-use amethyst::core::Transform;
-use amethyst::core::timing::Time;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
@@ -11,9 +11,7 @@ pub struct MoveComp;
 
 impl MoveComp {
     pub fn new() -> MoveComp {
-        MoveComp {
-
-        }
+        MoveComp {}
     }
 }
 

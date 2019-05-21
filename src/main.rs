@@ -8,20 +8,17 @@ use amethyst::renderer::{
     ColorMask, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage, ALPHA,
 };
 use amethyst::ui::{DrawUi, UiBundle};
-use amethyst::utils::{
-    ortho_camera::CameraOrthoSystem,
-};
-
+use amethyst::utils::ortho_camera::CameraOrthoSystem;
 
 pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
-mod zombie_curtains;
-mod systems;
 mod editor_systems;
+mod systems;
+mod zombie_curtains;
 
-use crate::systems::systems_bundle;
 use crate::editor_systems::editor_bundle;
+use crate::systems::systems_bundle;
 use crate::zombie_curtains::ZombieCurtains;
 
 fn main() -> amethyst::Result<()> {
@@ -58,7 +55,6 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(editor_bundle::EditorBundle::new())?
         .with_bundle(UiBundle::<String, String>::new())?
         .with(CameraOrthoSystem, "orthographic_camera", &[]);
-        
 
     let mut game = Application::build("./", ZombieCurtains)?
         .with_frame_limit(FrameRateLimitStrategy::Unlimited, 999)
