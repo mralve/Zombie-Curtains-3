@@ -43,9 +43,9 @@ impl Component for GenerateChunk {
     type Storage = VecStorage<Self>;
 }
 
-pub struct ChunkGenerator;
+pub struct ChunkGeneratorSystem;
 
-impl<'s> System<'s> for ChunkGenerator {
+impl<'s> System<'s> for ChunkGeneratorSystem {
     type SystemData = (
         WriteStorage<'s, GenerateChunk>,
         Entities<'s>,
@@ -68,7 +68,7 @@ impl<'s> System<'s> for ChunkGenerator {
                             sprite_number: sprite_id,
                         };
 
-                        transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 33.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 33.), 0.);
+                        transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 32.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 32.), 0.);
 
                         entities.build_entity()
                             .with(transform, &mut transforms)
