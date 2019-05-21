@@ -19,11 +19,12 @@ use amethyst::{
 
 };
 use amethyst::utils::ortho_camera::*;
+use amethyst::utils::application_dir;
 
 pub struct ZombieCurtains;
 
 pub struct WorldResources {
-    pub world_sprites: SpriteSheetHandle,
+    pub world_sprites: Vec<SpriteSheetHandle>,
 }
 
 use crate::systems::*;
@@ -42,10 +43,13 @@ impl SimpleState for ZombieCurtains {
         world.register::<Chunk>();
         world.register::<GenerateChunk>();
         
-        let world_sprites = load_sprite_sheet(world, "resources\\textures\\grass".to_string());
+        let world_sprites = vec![
+            load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("grass").to_string_lossy().to_string(), "tile".to_string()),
+            load_sprite_sheet(world, application_dir("resources").unwrap().join("textures").join("flower").to_string_lossy().to_string(), "tile".to_string()),
+            ];
         
         world.add_resource(WorldResources {
-            world_sprites: world_sprites.clone(),
+            world_sprites: world_sprites,
         });
 
         world.create_entity()
@@ -63,12 +67,6 @@ impl SimpleState for ZombieCurtains {
         world.create_entity()
             .with(GenerateChunk::new((-1, -1)))
             .build();
-            
-
-        let sprite_render = SpriteRender {
-            sprite_sheet: world_sprites, 
-            sprite_number: 0,
-        };   
     }
 
     fn handle_event(
@@ -119,7 +117,7 @@ fn init_camera(world: &mut World) {
         .build();
 }
 
-fn load_sprite_sheet(world: &mut World, path: String) -> SpriteSheetHandle {
+fn load_sprite_sheet(world: &mut World, path: String, ron: String) -> SpriteSheetHandle {
     let texture_handle = {
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
@@ -134,8 +132,13 @@ fn load_sprite_sheet(world: &mut World, path: String) -> SpriteSheetHandle {
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_storage = world.read_resource::<AssetStorage<SpriteSheet>>();
 
+    let binding_path = application_dir("resources")
+        .unwrap()
+        .join("rons")
+        .join(format!("{}.ron", ron));
+
     loader.load(
-        format!("{}.ron", path),
+        binding_path.to_string_lossy(),
         SpriteSheetFormat,
         texture_handle,
         (),

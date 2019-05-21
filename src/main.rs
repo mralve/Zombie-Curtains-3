@@ -24,7 +24,7 @@ use crate::editor_systems::editor_bundle;
 use crate::zombie_curtains::ZombieCurtains;
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    //amethyst::start_logger(Default::default());
     let mut config = DisplayConfig::default();
     config.title = "Zombie Curtains 3".to_string();
     config.decorations = true;

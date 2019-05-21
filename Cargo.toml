@@ -15,3 +15,4 @@ amethyst = {git = "https://github.com/amethyst/amethyst"}
 stretch = "0.2.2"
 image = "*"
 derive-new = "0.5.6"
+rand = "*"

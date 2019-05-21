@@ -5,6 +5,8 @@ use amethyst::core::Transform;
 use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
 
 use crate::zombie_curtains::WorldResources;
+extern crate rand;
+use rand::prelude::*;
 
 pub struct Chunk {
     pub tile_start_id: i32,
@@ -61,13 +63,23 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                 for y in 0..16 {
                     for x in 0..16 {
                         let mut transform = Transform::default();
+
+
+                        let mut rng = rand::thread_rng();
+                        let float: f32 = rng.gen();
+                        let sprite_id: usize = {
+                            let r = (float * 10.).round() as usize;
+                            if r > 0 {0}
+                            else {1}
+                        };
+
+                        println!("{}", sprite_id);
+
                         let sprite = SpriteRender {
-                            sprite_sheet: resources.world_sprites.clone(),
+                            sprite_sheet: resources.world_sprites[sprite_id].clone(),
                             sprite_number: 0,
                         };
 
-                        //transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 32.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 32.), 0.);
-                        
                         let tile_x = chunk_comp.x * 512 + x * 32;
                         let tile_y = chunk_comp.y * 512 + y * 32;
                         transform.set_translation_xyz(Float::from(tile_x as f32), Float::from(tile_y as f32), 0.);
@@ -76,7 +88,6 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                             .with(transform, &mut transforms)
                             .with(sprite, &mut sprites)
                             .build();
-
                     }
                 }
             }
