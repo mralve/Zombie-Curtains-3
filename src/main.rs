@@ -17,6 +17,10 @@ pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 mod zombie_curtains;
 mod systems;
+mod editor_systems;
+
+use crate::systems::systems_bundle;
+use crate::editor_systems::editor_bundle;
 use crate::zombie_curtains::ZombieCurtains;
 
 fn main() -> amethyst::Result<()> {
@@ -28,18 +32,18 @@ fn main() -> amethyst::Result<()> {
     config.transparent = false;
     config.fullscreen = false;
     config.dimensions = Some((*WIDTH as u32, *HEIGHT as u32));
-    config.vsync = false;
+    config.vsync = true;
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
-            .clear_target([0.0, 0.0, 0.0, 1.], 1.)
+            //.clear_target([0.0, 0.0, 0.0, 1.], 1.)
             .with_pass(DrawFlat2D::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
             .with_pass(DrawUi::new()),
     );
 
     use amethyst::input::InputBundle;
     use amethyst::utils::application_dir;
-    let binding_path = application_dir("resources\\bindings.ron")?;
+    let binding_path = application_dir("resources/bindings.ron")?;
     let input_bundle =
         InputBundle::<String, String>::new().with_bindings_from_file(&binding_path)?;
 
@@ -49,8 +53,9 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor())?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
+        .with_bundle(systems::GameSystemBundle)?
+        .with_bundle(editor_bundle::EditorBundle::new())?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with(systems::ChunkGenerator, "Chunk Generator", &[])
         .with(CameraOrthoSystem, "orthographic_camera", &[]);
         
 

@@ -41,7 +41,7 @@ impl SimpleState for ZombieCurtains {
 
         world.register::<Chunk>();
         world.register::<GenerateChunk>();
-
+        
         let world_sprites = load_sprite_sheet(world, "resources\\textures\\grass".to_string());
         
         world.add_resource(WorldResources {
@@ -105,6 +105,7 @@ fn init_camera(world: &mut World) {
     };
 
     transform.set_translation_z(2.0);
+    
     world
         .create_entity()
         .with(Camera::from(Projection::orthographic(

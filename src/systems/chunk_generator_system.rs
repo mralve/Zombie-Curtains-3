@@ -43,9 +43,9 @@ impl Component for GenerateChunk {
     type Storage = VecStorage<Self>;
 }
 
-pub struct ChunkGenerator;
+pub struct ChunkGeneratorSystem;
 
-impl<'s> System<'s> for ChunkGenerator {
+impl<'s> System<'s> for ChunkGeneratorSystem {
     type SystemData = (
         WriteStorage<'s, GenerateChunk>,
         Entities<'s>,
@@ -65,6 +65,8 @@ impl<'s> System<'s> for ChunkGenerator {
                             sprite_sheet: resources.world_sprites.clone(),
                             sprite_number: 0,
                         };
+
+                        //transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 32.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 32.), 0.);
                         
                         let tile_x = chunk_comp.x * 512 + x * 32;
                         let tile_y = chunk_comp.y * 512 + y * 32;
