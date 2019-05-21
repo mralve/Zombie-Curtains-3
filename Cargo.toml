@@ -1,0 +1,17 @@
+[package]
+name = "ZC3"
+version = "0.1.0"
+authors = ["mralve <lolzman12@hotmail.se>"]
+edition = "2018"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = 'abort'
+
+[dependencies]
+amethyst = {git = "https://github.com/amethyst/amethyst"}
+stretch = "0.2.2"
+image = "*"
+derive-new = "0.5.6"
