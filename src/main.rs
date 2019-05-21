@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, ZOMBEI CURTAINS 3");
+    println!("Hello, ZOMBIE CURTAINS 3");
 }
