@@ -33,7 +33,7 @@ fn main() -> amethyst::Result<()> {
     config.transparent = false;
     config.fullscreen = false;
     config.dimensions = Some((*WIDTH as u32, *HEIGHT as u32));
-    config.vsync = true;
+    config.vsync = false;
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()

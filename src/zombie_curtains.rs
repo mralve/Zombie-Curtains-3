@@ -41,6 +41,7 @@ impl SimpleState for ZombieCurtains {
         init_camera(world);
 
         world.register::<Chunk>();
+
         world.register::<GenerateChunk>();
         
         let world_sprites = vec![
@@ -104,6 +105,10 @@ fn init_camera(world: &mut World) {
 
     transform.set_translation_z(2.0);
     
+    use crate::editor_systems::MoveComp;
+    // Editor movement
+    world.register::<MoveComp>();
+    
     world
         .create_entity()
         .with(Camera::from(Projection::orthographic(
@@ -112,6 +117,7 @@ fn init_camera(world: &mut World) {
             0.0,
             crate::HEIGHT * 0.32 * 1.5,
         )))
+        .with(MoveComp::new())
         .with(transform)
         .with(camera_ortho)
         .build();
