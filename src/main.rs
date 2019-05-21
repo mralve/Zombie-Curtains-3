@@ -12,6 +12,7 @@ use amethyst::utils::{
     ortho_camera::CameraOrthoSystem,
 };
 
+
 pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
@@ -43,7 +44,7 @@ fn main() -> amethyst::Result<()> {
 
     use amethyst::input::InputBundle;
     use amethyst::utils::application_dir;
-    let binding_path = application_dir("resources/bindings.ron")?;
+    let binding_path = application_dir("resources")?.join("bindings.ron");
     let input_bundle =
         InputBundle::<String, String>::new().with_bindings_from_file(&binding_path)?;
 
