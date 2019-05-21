@@ -68,7 +68,11 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                             sprite_number: sprite_id,
                         };
 
-                        transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 32.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 32.), 0.);
+                        //transform.set_translation_xyz(Float::from(chunk_comp.x as f32 * 512. + x as f32 * 32.), Float::from(chunk_comp.y as f32 * 512. + y as f32 * 32.), 0.);
+                        
+                        let tile_x = chunk_comp.x * 512 + x * 32;
+                        let tile_y = chunk_comp.y * 512 + y * 32;
+                        transform.set_translation_xyz(Float::from(tile_x as f32), Float::from(tile_y as f32), 0.);
 
                         entities.build_entity()
                             .with(transform, &mut transforms)
