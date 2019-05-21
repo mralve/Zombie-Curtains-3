@@ -22,8 +22,14 @@ use amethyst::utils::ortho_camera::*;
 
 pub struct ZombieCurtains;
 
-pub const CAMERA_SCALE_HEIGHT: f32 = 1080.;
-pub const CAMERA_SCALE_WIDTH: f32 = 1920.;
+pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / 20.;
+pub const CAMERA_SCALE_WIDTH: f32 = 1920. / 20.;
+
+pub struct WorldResources {
+    pub world_sprites: SpriteSheetHandle,
+}
+
+use crate::systems::*;
 
 impl SimpleState for ZombieCurtains {
 
@@ -31,6 +37,24 @@ impl SimpleState for ZombieCurtains {
         let world = data.world;
         world.register::<CameraOrtho>();
         init_camera(world);
+
+        world.register::<Chunk>();
+        world.register::<GenerateChunk>();
+
+        let world_sprites = load_sprite_sheet(world, "resources\\textures\\world_sprites".to_string());
+        
+        world.add_resource(WorldResources {
+            world_sprites: world_sprites.clone(),
+        });
+
+        world.create_entity()
+            .with(GenerateChunk::new((0, 0)))
+            .build();
+
+        let sprite_render = SpriteRender {
+            sprite_sheet: world_sprites, 
+            sprite_number: 0,
+        };   
     }
 
     fn handle_event(
@@ -41,9 +65,6 @@ impl SimpleState for ZombieCurtains {
         match &event {
             StateEvent::Window(event) => {
                 if is_close_requested(&event) || is_key_down(&event, VirtualKeyCode::Escape) {
-
-                    // TODO: Add a prompt to warn the use to save the content before exiting.
-
                     Trans::Quit
                 } else {
                     Trans::None
@@ -74,9 +95,9 @@ fn init_camera(world: &mut World) {
         .create_entity()
         .with(Camera::from(Projection::orthographic(
             0.0,
-            crate::WIDTH * 1.,
+            crate::WIDTH * 0.5,
             0.0,
-            crate::HEIGHT * 1.,
+            crate::HEIGHT * 0.5,
         )))
         .with(camera_ortho)
         .with(transform)

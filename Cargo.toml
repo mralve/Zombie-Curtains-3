@@ -1,6 +1,6 @@
 [package]
 name = "ZC3"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["mralve <lolzman12@hotmail.se>", "TheEggHealer <TheEggKiller@gmail.com"]
 edition = "2018"
 

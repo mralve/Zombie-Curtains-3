@@ -1,4 +1,4 @@
-#![windows_subsystem = "windows"]
+//#![windows_subsystem = "windows"]
 extern crate amethyst;
 
 use amethyst::core::frame_limiter::FrameRateLimitStrategy;
@@ -16,10 +16,11 @@ pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 mod zombie_curtains;
+mod systems;
 use crate::zombie_curtains::ZombieCurtains;
 
 fn main() -> amethyst::Result<()> {
-    //amethyst::start_logger(Default::default());
+    amethyst::start_logger(Default::default());
     let mut config = DisplayConfig::default();
     config.title = "Zombie Curtains 3".to_string();
     config.decorations = true;
@@ -49,7 +50,9 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with(CameraOrthoSystem, "orthographic_camera", &[]);
+        .with(CameraOrthoSystem, "orthographic_camera", &[])
+        .with(systems::ChunkGenerator, "Chunk Generator", &[]);
+        
 
     let mut game = Application::build("./", ZombieCurtains)?
         .with_frame_limit(FrameRateLimitStrategy::Unlimited, 999)
