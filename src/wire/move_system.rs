@@ -6,7 +6,8 @@ use amethyst::ecs::NullStorage;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
-use crate::editor_systems::VelSlideComp;
+use crate::wire::VelSlideComp;
+use amethyst::input::{ StringBindings};
 
 #[derive(Default)]
 pub struct MoveComp;
@@ -27,7 +28,7 @@ impl<'s> System<'s> for MoveSystem {
     type SystemData = (
         WriteStorage<'s, VelSlideComp>,
         ReadStorage<'s, MoveComp>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
         Read<'s, Time>,
     );
 

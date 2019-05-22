@@ -3,10 +3,10 @@ use amethyst::ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, Wr
 use amethyst::input::InputHandler;
 use amethyst::input::ScrollDirection;
 
-use amethyst::renderer::Camera;
 use amethyst::utils::ortho_camera::*;
+use amethyst::input::{ StringBindings};
 
-use crate::editor_systems::VelSlideComp;
+use crate::wire::VelSlideComp;
 
 #[derive(Default)]
 pub struct ZoomComp {
@@ -27,18 +27,18 @@ pub struct ZoomSystem;
 
 impl<'s> System<'s> for ZoomSystem {
     type SystemData = (
-        ReadStorage<'s, Camera>,
+        //ReadStorage<'s, Camera>,
         WriteStorage<'s, ZoomComp>,
         WriteStorage<'s, CameraOrtho>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (cameras, mut zoom, mut ortho, input, time): Self::SystemData) {
+    fn run(&mut self, ( mut zoom, mut ortho, input, time): Self::SystemData) {
         /*
          */
         let mut scroll: Option<f64>;
-        for (ortho_comp, zoom_comp, camera_comp) in (&mut ortho, &mut zoom, &cameras).join() {
+        for (ortho_comp, zoom_comp) in (&mut ortho, &mut zoom).join() {
             //scroll = input.axis_value("scroll");
 /*
 

@@ -1,5 +1,5 @@
 // Editor bundle
-pub mod editor_bundle;
+pub mod wire_editor_bundle;
 
 // Editor move system.
 pub mod move_system;

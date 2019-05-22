@@ -4,6 +4,7 @@ use amethyst::ecs::prelude::*;
 use amethyst::ecs::NullStorage;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
+use amethyst::input::{ StringBindings};
 
 #[derive(Default)]
 pub struct PlayerMovement {
@@ -29,7 +30,7 @@ impl<'s> System<'s> for PlayerMovementSystem {
         WriteStorage<'s, PlayerMovement>,
         WriteStorage<'s, Transform>,
         Read<'s, Time>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
     );
 
     fn run(&mut self, (mut player_movements, mut transforms, time, input): Self::SystemData) {

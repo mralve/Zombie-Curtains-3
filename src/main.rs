@@ -1,24 +1,31 @@
 //#![windows_subsystem = "windows"]
 extern crate amethyst;
 
+use amethyst::renderer::{types::DefaultBackend, RenderingSystem, transparent::Transparent};
+use amethyst::window::{DisplayConfig};
+
+use crate::render_graph::RenderGraph;
+
+mod render_graph;
+
 use amethyst::core::frame_limiter::FrameRateLimitStrategy;
 use amethyst::core::transform::TransformBundle;
 use amethyst::prelude::*;
-use amethyst::renderer::{
-    ColorMask, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage, ALPHA,
-};
+
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::utils::ortho_camera::CameraOrthoSystem;
+
+use amethyst::window::WindowBundle;
 
 pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
-mod editor_systems;
+mod wire;
 mod particles;
 mod systems;
 mod zombie_curtains;
 
-use crate::editor_systems::editor_bundle;
+use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::systems::systems_bundle;
 use crate::zombie_curtains::ZombieCurtains;
 
@@ -29,34 +36,25 @@ fn main() -> amethyst::Result<()> {
     config.decorations = true;
     config.resizable = true;
     config.transparent = false;
-    config.fullscreen = false;
     config.dimensions = Some((*WIDTH as u32, *HEIGHT as u32));
-    config.vsync = false;
-    config.multisampling = 2;
 
-    let pipe = Pipeline::build().with_stage(
-        Stage::with_backbuffer()
-            //.clear_target([0.0, 0.0, 0.0, 1.], 1.)
-            .with_pass(DrawFlat2D::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
-            .with_pass(DrawUi::new()),
-    );
-
-    use amethyst::input::InputBundle;
+    use amethyst::input::{InputBundle, StringBindings};
     use amethyst::utils::application_dir;
     let binding_path = application_dir("resources")?.join("bindings.ron");
-    let input_bundle =
-        InputBundle::<String, String>::new().with_bindings_from_file(&binding_path)?;
+    let Input_Bundle =
+        InputBundle::<StringBindings>::new().with_bindings_from_file(&binding_path)?;
 
     println!("{:?}", &binding_path);
 
     let game_data = GameDataBuilder::default()
-        .with_bundle(RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor())?
+        .with_bundle(WindowBundle::from_config(config))?
+        .with_thread_local(RenderingSystem::<DefaultBackend, _>::new(RenderGraph::default(),))
         .with_bundle(TransformBundle::new())?
-        .with_bundle(input_bundle)?
+        .with_bundle(Input_Bundle)?
         .with_bundle(systems::GameSystemBundle)?
         .with_bundle(particles::particles_bundle::ParticlesBundle)?
-        .with_bundle(editor_bundle::EditorBundle::new())?
-        .with_bundle(UiBundle::<String, String>::new())?
+        .with_bundle(WireEditorBundle::new())?
+        .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())?
         .with(CameraOrthoSystem, "orthographic_camera", &[]);
 
     let mut game = Application::build("./", ZombieCurtains)?

@@ -1,18 +1,21 @@
+//////////////////////////////////////////////////////////////////
+//                                                              //
+//    Wire Editor, experimental editor system inside of ECS.    //
+//                                                              //
+//                                                              //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
 use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::*;
 use amethyst::ecs::Resources;
 use amethyst::prelude::*;
-/*
 use amethyst::renderer::WindowMessages;
-*/
-
-/*
 use amethyst::renderer::{
     Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
     SpriteSheetHandle, Texture, TextureMetadata,
 };
-*/
 use amethyst::ui::*;
 use amethyst::utils::application_dir;
 use amethyst::utils::ortho_camera::*;
@@ -21,104 +24,20 @@ use amethyst::{
     winit::VirtualKeyCode,
 };
 
-pub struct ZombieCurtains;
-pub struct WorldResources {
-/*
-    pub world_sprites: Vec<SpriteSheetHandle>,
-    pub entity_sprites: Vec<SpriteSheetHandle>,
-*/
-}
-
-use crate::systems::*;
-use crate::systems::entities::*;
 
 pub const CAMERA_ZOOM: f32 = 2.5;
 pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / CAMERA_ZOOM;
 pub const CAMERA_SCALE_WIDTH: f32 = 1920. / CAMERA_ZOOM;
 
-impl SimpleState for ZombieCurtains {
+
+pub struct WireEditor;
+
+impl SimpleState for WireEditor {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
         init_camera(world);
 
-        let world_sprites = vec![
-            load_sprite_sheet(
-                world,
-                application_dir("resources")
-                    .unwrap()
-                    .join("textures")
-                    .join("grass")
-                    .to_string_lossy()
-                    .to_string(),
-                "tile".to_string(),
-            ),
-            load_sprite_sheet(
-                world,
-                application_dir("resources")
-                    .unwrap()
-                    .join("textures")
-                    .join("grass2")
-                    .to_string_lossy()
-                    .to_string(),
-                "tile".to_string(),
-            ),
-        ];
-        
-        let entity_sprites = vec![
-            load_sprite_sheet(
-                world,
-                application_dir("resources")
-                    .unwrap()
-                    .join("textures")
-                    .join("wab_player")
-                    .to_string_lossy()
-                    .to_string(),
-                "player".to_string(),
-            ),
-        ];
-
-        let sprite = SpriteRender {
-            sprite_sheet: entity_sprites[0].clone(), 
-            sprite_number: 0,
-        };
-
-        world.add_resource(WorldResources {
-            world_sprites: world_sprites,
-            entity_sprites: entity_sprites,
-        });
-
-        //Temporary Chunks
-        {
-            world
-                .create_entity()
-                .with(GenerateChunk::new((0, 0)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((-1, 0)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((0, -1)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((-1, -1)))
-                .build();
-        }
-
-        
-
-        world
-            .create_entity()
-            .with(PlayerMovement::new())
-            .with(Transform::default())
-            .with(sprite)
-            .build();
     }
 
     fn handle_event(
@@ -147,12 +66,12 @@ fn init_camera(world: &mut World) {
         left: -CAMERA_SCALE_WIDTH / 2.,
         right: CAMERA_SCALE_WIDTH / 2.,
         bottom: -CAMERA_SCALE_HEIGHT / 2.,
-        top: CAMERA_SCALE_HEIGHT / 2.,
+        top: CAMERA_SCALE_HEIGHT / 2.,use amethyst::core::Float;
     };
 
     transform.set_translation_z(2.0);
 
-    use crate::wire::{MoveComp, VelSlideComp, ZoomComp};
+    use crate::editor_systems::{MoveComp, VelSlideComp, ZoomComp};
     // Editor movement
 
     world
