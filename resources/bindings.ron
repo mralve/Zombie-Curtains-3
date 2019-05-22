@@ -2,6 +2,7 @@
   axes: {
     "ud": Emulated(pos: Key(W), neg: Key(S)),
     "lr": Emulated(pos: Key(D), neg: Key(A)),
+    "scroll": Emulated( pos: MouseWheel(ScrollUp), neg: MouseWheel(ScrollDown)  ),
   },
   actions: {},
 )
