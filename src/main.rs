@@ -14,6 +14,7 @@ pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 mod editor_systems;
+mod particles;
 mod systems;
 mod zombie_curtains;
 
@@ -52,6 +53,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(systems::GameSystemBundle)?
+        .with_bundle(particles::particles_bundle::ParticlesBundle)?
         .with_bundle(editor_bundle::EditorBundle::new())?
         .with_bundle(UiBundle::<String, String>::new())?
         .with(CameraOrthoSystem, "orthographic_camera", &[]);
