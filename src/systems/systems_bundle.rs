@@ -25,6 +25,7 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
         builder.add(ortho_camera::CameraOrthoSystem, "camera_ortho_system", &[]);
         builder.add(entities::player_movement_system::PlayerMovementSystem, "player_movement_system", &[]);
         builder.add(systems::CameraMovementSystem, "camera_movement_system", &[]);
+        builder.add(systems::GeneratorSourceSystem, "generator_source_system", &[]);
         Ok(())
     }
 }

@@ -161,6 +161,7 @@ fn init_camera(world: &mut World) {
  //       .with(VelSlideComp::new())
         .with(transform)
         .with(CameraMovement::new())
+        .with(GeneratorSource::new())
         .with(camera_ortho)
         .with(ZoomComp::new())
         .build();
