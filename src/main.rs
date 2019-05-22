@@ -32,6 +32,7 @@ fn main() -> amethyst::Result<()> {
     config.fullscreen = false;
     config.dimensions = Some((*WIDTH as u32, *HEIGHT as u32));
     config.vsync = false;
+    config.multisampling = 2;
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()

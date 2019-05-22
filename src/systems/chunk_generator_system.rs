@@ -66,7 +66,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         let mut transform = Transform::default();
                         let tile_x = chunk_comp.x * 512 + x * 32;
                         let tile_y = chunk_comp.y * 512 + y * 32;
-
+                        
                         let sprite = SpriteRender {
                             sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))]
                                 .clone(),
