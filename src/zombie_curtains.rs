@@ -1,20 +1,21 @@
-use crate::{systems::{ *, entities::* }};
+use crate::systems::{entities::*, *};
 
 use amethyst::{
-    prelude::*,
-    ecs::Resources,
-    ecs::prelude::*,
-    core::transform::Transform,
     assets::{AssetStorage, Loader},
+    core::transform::Transform,
+    ecs::prelude::*,
+    ecs::Resources,
+    input::{is_close_requested, is_key_down, InputBundle},
+    prelude::*,
+    renderer::{
+        camera::{Camera, Projection},
+        formats::texture::ImageFormat,
+        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle},
+        Texture,
+    },
     ui::*,
     utils::{application_dir, ortho_camera::*},
-    input::{is_close_requested, is_key_down, InputBundle},
     winit::VirtualKeyCode,
-    renderer::{
-        Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
-        SpriteSheetHandle, Texture, TextureMetadata,
-    },
-
 };
 
 pub struct ZombieCurtains;
@@ -23,7 +24,6 @@ pub struct WorldResources {
     pub world_sprites: Vec<SpriteSheetHandle>,
     pub entity_sprites: Vec<SpriteSheetHandle>,
 }
-
 
 pub const CAMERA_ZOOM: f32 = 2.5;
 pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / CAMERA_ZOOM;
@@ -36,7 +36,7 @@ impl SimpleState for ZombieCurtains {
         init_camera(world);
 
         let world_sprites = vec![
-            load_sprite_sheet(
+            load_sprite(
                 world,
                 application_dir("resources")
                     .unwrap()
@@ -46,7 +46,7 @@ impl SimpleState for ZombieCurtains {
                     .to_string(),
                 "tile".to_string(),
             ),
-            load_sprite_sheet(
+            load_sprite(
                 world,
                 application_dir("resources")
                     .unwrap()
@@ -57,22 +57,19 @@ impl SimpleState for ZombieCurtains {
                 "tile".to_string(),
             ),
         ];
-        
-        let entity_sprites = vec![
-            load_sprite_sheet(
-                world,
-                application_dir("resources")
-                    .unwrap()
-                    .join("textures")
-                    .join("wab_player")
-                    .to_string_lossy()
-                    .to_string(),
-                "player".to_string(),
-            ),
-        ];
 
+        let entity_sprites = vec![load_sprite(
+            world,
+            application_dir("resources")
+                .unwrap()
+                .join("textures")
+                .join("wab_player")
+                .to_string_lossy()
+                .to_string(),
+            "player".to_string(),
+        )];
         let sprite = SpriteRender {
-            sprite_sheet: entity_sprites[0].clone(), 
+            sprite_sheet: entity_sprites[0].clone(),
             sprite_number: 0,
         };
 
@@ -103,8 +100,6 @@ impl SimpleState for ZombieCurtains {
                 .with(GenerateChunk::new((-1, -1)))
                 .build();
         }
-
-        
 
         world
             .create_entity()
@@ -155,42 +150,87 @@ fn init_camera(world: &mut World) {
             crate::WIDTH * 0.32 * 1.5,
             0.0,
             crate::HEIGHT * 0.32 * 1.5,
+            0.0,
+            5.0,
         )))
- //       .with(MoveComp::new())
- //       .with(VelSlideComp::new())
+        //       .with(MoveComp::new())
+        //       .with(VelSlideComp::new())
         .with(transform)
         .with(CameraMovement::new())
         .with(GeneratorSource::new())
         .with(camera_ortho)
-        .with(ZoomComp::new())
+        //.with(ZoomComp::new())
         .build();
 }
 
-fn load_sprite_sheet(world: &mut World, path: String, ron: String) -> SpriteSheetHandle {
+#[derive(Debug, Clone)]
+struct LoadedSpriteSheet {
+    sprite_sheet_handle: SpriteSheetHandle,
+    sprite_count: u32,
+    sprite_w: u32,
+    sprite_h: u32,
+}
+
+/*
+fn load_sprite_sheet(world: &mut World) -> LoadedSpriteSheet {
+    let loader = world.read_resource::<Loader>();
+    let texture_handle = {
+        let texture_storage = world.read_resource::<AssetStorage<Texture>>();
+        loader.load(
+            "texture/arrow_semi_transparent.png",
+            ImageFormat::default(),
+            (),
+            &texture_storage,
+        )
+    };
+    let sprite_w = 32;
+    let sprite_h = 32;
+    let sprite_sheet_definition = SpriteSheetDefinition::new(sprite_w, sprite_h, 2, 6, false);
+
+    let sprite_sheet = sprite_sheet_loader::load(texture_handle, &sprite_sheet_definition);
+    let sprite_count = sprite_sheet.sprites.len() as u32;
+
+    let sprite_sheet_handle = {
+        let loader = world.read_resource::<Loader>();
+        loader.load_from_data(
+            sprite_sheet,
+            (),
+            &world.read_resource::<AssetStorage<SpriteSheet>>(),
+        )
+    };
+
+    LoadedSpriteSheet {
+        sprite_sheet_handle,
+        sprite_count,
+        sprite_w,
+        sprite_h,
+    }
+}
+*/
+
+fn load_sprite(world: &mut World, path: String, ron: String) -> SpriteSheetHandle {
     let texture_handle = {
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
             format!("{}.png", path),
-            PngFormat,
-            TextureMetadata::srgb_scale(),
+            ImageFormat::default(),
             (),
             &texture_storage,
         )
     };
     let loader = world.read_resource::<Loader>();
-    let sprite_sheet_storage = world.read_resource::<AssetStorage<SpriteSheet>>();
+    let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
 
-    let binding_path = application_dir("resources")
+    let ronpath = application_dir("resources")
         .unwrap()
         .join("rons")
         .join(format!("{}.ron", ron));
 
     loader.load(
-        binding_path.to_string_lossy(),
-        SpriteSheetFormat,
-        texture_handle,
+        ronpath.to_string_lossy(),
+        SpriteSheetFormat(texture_handle),
         (),
-        &sprite_sheet_storage,
+        &sprite_sheet_store,
     )
 }

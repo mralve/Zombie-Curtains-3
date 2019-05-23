@@ -2,26 +2,33 @@
 
 mod render_graph;
 
-mod wire;
 mod particles;
 mod systems;
+mod wire;
 mod zombie_curtains;
 
 extern crate amethyst;
 
 use amethyst::{
-    prelude::*,
+    assets::{AssetStorage, Loader, Processor},
     core::{frame_limiter::FrameRateLimitStrategy, transform::TransformBundle},
-    window::{DisplayConfig},
-    renderer::{types::DefaultBackend, RenderingSystem, transparent::Transparent},
+    prelude::*,
+    renderer::{
+        sprite::{SpriteRender, SpriteSheet},
+        sprite_visibility::SpriteVisibilitySortingSystem,
+        transparent::Transparent,
+        types::DefaultBackend,
+        RenderingSystem,
+    },
     ui::{DrawUi, UiBundle},
     utils::ortho_camera::CameraOrthoSystem,
+    window::DisplayConfig,
     window::WindowBundle,
 };
 
-use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::render_graph::RenderGraph;
 use crate::systems::systems_bundle;
+use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::zombie_curtains::ZombieCurtains;
 
 pub const WIDTH: &'static f32 = &(1920. / 1.5);
@@ -46,14 +53,26 @@ fn main() -> amethyst::Result<()> {
 
     let game_data = GameDataBuilder::default()
         .with_bundle(WindowBundle::from_config(config))?
-        .with_thread_local(RenderingSystem::<DefaultBackend, _>::new(RenderGraph::default(),))
         .with_bundle(TransformBundle::new())?
         .with_bundle(Input_Bundle)?
         .with_bundle(systems::GameSystemBundle)?
         .with_bundle(particles::particles_bundle::ParticlesBundle)?
         .with_bundle(WireEditorBundle::new())?
         .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())?
-        .with(CameraOrthoSystem, "orthographic_camera", &[]);
+        .with(
+            Processor::<SpriteSheet>::new(),
+            "sprite_sheet_processor",
+            &[],
+        )
+        .with(
+            SpriteVisibilitySortingSystem::new(),
+            "sprite_visibility_system",
+            &["transform_system"],
+        )
+        .with(CameraOrthoSystem, "orthographic_camera", &[])
+        .with_thread_local(RenderingSystem::<DefaultBackend, _>::new(
+            RenderGraph::default(),
+        ));
 
     let mut game = Application::build("./", ZombieCurtains)?
         .with_frame_limit(FrameRateLimitStrategy::Unlimited, 999)

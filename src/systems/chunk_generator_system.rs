@@ -1,7 +1,7 @@
 use amethyst::{
     core::{Float, Transform},
     ecs::{prelude::*, NullStorage},
-    renderer::{SpriteRender};
+    renderer::{SpriteRender},
 };
 
 use crate::zombie_curtains::WorldResources;
