@@ -1,7 +1,7 @@
 use amethyst::{
     core::{Float, Transform},
     ecs::{prelude::*, NullStorage},
-    renderer::{SpriteRender},
+    renderer::SpriteRender,
 };
 
 use crate::zombie_curtains::WorldResources;
@@ -66,7 +66,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         let mut transform = Transform::default();
                         let tile_x = chunk_comp.x * 512 + x * 32;
                         let tile_y = chunk_comp.y * 512 + y * 32;
-                        
+
                         let sprite = SpriteRender {
                             sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))]
                                 .clone(),
@@ -76,7 +76,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         transform.set_translation_xyz(
                             Float::from(tile_x as f32),
                             Float::from(tile_y as f32),
-                            0.,
+                            -1.,
                         );
 
                         entities

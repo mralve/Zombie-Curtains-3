@@ -78,29 +78,6 @@ impl SimpleState for ZombieCurtains {
             entity_sprites: entity_sprites,
         });
 
-        //Temporary Chunks
-        {
-            world
-                .create_entity()
-                .with(GenerateChunk::new((0, 0)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((-1, 0)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((0, -1)))
-                .build();
-
-            world
-                .create_entity()
-                .with(GenerateChunk::new((-1, -1)))
-                .build();
-        }
-
         world
             .create_entity()
             .with(PlayerMovement::new())
