@@ -1,8 +1,8 @@
-use amethyst::core::Float;
-use amethyst::core::Transform;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::NullStorage;
-use amethyst::renderer::{SpriteRender};
+use amethyst::{
+    core::{Float, Transform},
+    ecs::{prelude::*, NullStorage},
+    renderer::{SpriteRender};
+};
 
 use crate::zombie_curtains::WorldResources;
 extern crate rand;

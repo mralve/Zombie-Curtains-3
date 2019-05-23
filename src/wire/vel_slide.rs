@@ -1,6 +1,7 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Transform;
-use amethyst::ecs::{Component, Join, Read, System, VecStorage, WriteStorage};
+use amethyst::{
+    core::{ timing::Time, Transform},
+    ecs::{Component, Join, Read, System, VecStorage, WriteStorage}
+};
 
 pub struct VelSlideSystem;
 

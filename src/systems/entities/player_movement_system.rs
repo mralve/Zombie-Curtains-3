@@ -1,10 +1,9 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Transform;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::NullStorage;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::input::{ StringBindings};
+
+use amethyst::{
+    core::{timing::Time, Transform},
+    ecs::{Join, Read, ReadStorage, System, WriteStorage, prelude::*, NullStorage},
+    input::{InputHandler, StringBindings},
+};
 
 #[derive(Default)]
 pub struct PlayerMovement {

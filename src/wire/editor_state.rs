@@ -6,24 +6,21 @@
 //                                                              //
 //////////////////////////////////////////////////////////////////
 
-use amethyst::assets::{AssetStorage, Loader};
-use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::Resources;
-use amethyst::prelude::*;
-use amethyst::renderer::WindowMessages;
-use amethyst::renderer::{
-    Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
-    SpriteSheetHandle, Texture, TextureMetadata,
-};
-use amethyst::ui::*;
-use amethyst::utils::application_dir;
-use amethyst::utils::ortho_camera::*;
 use amethyst::{
+    assets::{AssetStorage, Loader},
+    core::transform::Transform,
+    ecs::prelude::*,
+    ecs::Resources,
+    prelude::*,
+    renderer::WindowMessages,
+    renderer::{
+        Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
+        SpriteSheetHandle, Texture, TextureMetadata,},
+    ui::*,
+    utils::{application_dir, ortho_camera::*},
     input::{is_close_requested, is_key_down, InputBundle},
     winit::VirtualKeyCode,
 };
-
 
 pub const CAMERA_ZOOM: f32 = 2.5;
 pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / CAMERA_ZOOM;

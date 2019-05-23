@@ -1,33 +1,31 @@
 //#![windows_subsystem = "windows"]
-extern crate amethyst;
-
-use amethyst::renderer::{types::DefaultBackend, RenderingSystem, transparent::Transparent};
-use amethyst::window::{DisplayConfig};
-
-use crate::render_graph::RenderGraph;
 
 mod render_graph;
-
-use amethyst::core::frame_limiter::FrameRateLimitStrategy;
-use amethyst::core::transform::TransformBundle;
-use amethyst::prelude::*;
-
-use amethyst::ui::{DrawUi, UiBundle};
-use amethyst::utils::ortho_camera::CameraOrthoSystem;
-
-use amethyst::window::WindowBundle;
-
-pub const WIDTH: &'static f32 = &(1920. / 1.5);
-pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 mod wire;
 mod particles;
 mod systems;
 mod zombie_curtains;
 
+extern crate amethyst;
+
+use amethyst::{
+    prelude::*,
+    core::{frame_limiter::FrameRateLimitStrategy, transform::TransformBundle},
+    window::{DisplayConfig},
+    renderer::{types::DefaultBackend, RenderingSystem, transparent::Transparent},
+    ui::{DrawUi, UiBundle},
+    utils::ortho_camera::CameraOrthoSystem,
+    window::WindowBundle,
+};
+
 use crate::wire::wire_editor_bundle::WireEditorBundle;
+use crate::render_graph::RenderGraph;
 use crate::systems::systems_bundle;
 use crate::zombie_curtains::ZombieCurtains;
+
+pub const WIDTH: &'static f32 = &(1920. / 1.5);
+pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 fn main() -> amethyst::Result<()> {
     //amethyst::start_logger(Default::default());

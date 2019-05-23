@@ -1,8 +1,7 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Float;
-use amethyst::core::Transform;
-use amethyst::ecs::{Component, Join, Read, System, VecStorage, WriteStorage, ReadStorage};
-use amethyst::core::math::{RealField, ComplexField};
+use amethyst::{
+    core::{timing::Time, math::{RealField, ComplexField}, Float, Transform},
+    ecs::{Component, Join, Read, System, VecStorage, WriteStorage, ReadStorage},
+};
 
 use crate::systems::entities::*;
 

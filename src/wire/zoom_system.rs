@@ -1,10 +1,13 @@
-use amethyst::core::{timing::Time, Float, Transform};
-use amethyst::ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::input::ScrollDirection;
-
-use amethyst::utils::ortho_camera::*;
-use amethyst::input::{ StringBindings};
+use amethyst::{
+    core::{timing::Time, Float, Transform},
+    ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
+    input::{
+        InputHandler,
+        ScrollDirection,
+        StringBindings
+    },
+    utils::ortho_camera::*, 
+};
 
 use crate::wire::VelSlideComp;
 

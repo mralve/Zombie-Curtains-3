@@ -1,13 +1,12 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Float;
-use amethyst::core::Transform;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::NullStorage;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
+use amethyst::{
+    core::{timing::Time, Float, Transform},
+    ecs::prelude::*,
+    ecs::NullStorage,
+    ecs::{ Join, Read, ReadStorage, System, WriteStorage}, 
+    input::{ StringBindings, InputHandler }
+};
 
 use crate::wire::VelSlideComp;
-use amethyst::input::{ StringBindings};
 
 #[derive(Default)]
 pub struct MoveComp;

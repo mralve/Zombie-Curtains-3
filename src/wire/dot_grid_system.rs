@@ -1,8 +1,10 @@
-use amethyst::core::Float;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::NullStorage;
-use amethyst::core::Transform;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
+use amethyst::{
+    core::Float,
+    ecs::prelude::*,
+    ecs::NullStorage,
+    core::Transform,
+    renderer::{SpriteRender, SpriteSheetHandle}
+};
 
 #[derive(Default)]
 pub struct Dot {

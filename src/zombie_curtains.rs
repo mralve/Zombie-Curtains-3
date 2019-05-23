@@ -1,36 +1,29 @@
-use amethyst::assets::{AssetStorage, Loader};
-use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::*;
-use amethyst::ecs::Resources;
-use amethyst::prelude::*;
-/*
-use amethyst::renderer::WindowMessages;
-*/
+use crate::{systems::{ *, entities::* }};
 
-/*
-use amethyst::renderer::{
-    Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
-    SpriteSheetHandle, Texture, TextureMetadata,
-};
-*/
-use amethyst::ui::*;
-use amethyst::utils::application_dir;
-use amethyst::utils::ortho_camera::*;
 use amethyst::{
+    prelude::*,
+    ecs::Resources,
+    ecs::prelude::*,
+    core::transform::Transform,
+    assets::{AssetStorage, Loader},
+    ui::*,
+    utils::{application_dir, ortho_camera::*},
     input::{is_close_requested, is_key_down, InputBundle},
     winit::VirtualKeyCode,
+    renderer::{
+        Camera, PngFormat, Projection, Renderer, SpriteRender, SpriteSheet, SpriteSheetFormat,
+        SpriteSheetHandle, Texture, TextureMetadata,
+    },
+
 };
 
 pub struct ZombieCurtains;
+
 pub struct WorldResources {
-/*
     pub world_sprites: Vec<SpriteSheetHandle>,
     pub entity_sprites: Vec<SpriteSheetHandle>,
-*/
 }
 
-use crate::systems::*;
-use crate::systems::entities::*;
 
 pub const CAMERA_ZOOM: f32 = 2.5;
 pub const CAMERA_SCALE_HEIGHT: f32 = 1080. / CAMERA_ZOOM;
