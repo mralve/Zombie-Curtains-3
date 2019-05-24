@@ -1,6 +1,10 @@
 use amethyst::{
-    core::{timing::Time, math::{RealField, ComplexField}, Float, Transform},
-    ecs::{Component, Join, Read, System, VecStorage, WriteStorage, ReadStorage},
+    core::{
+        math::{ComplexField, RealField},
+        timing::Time,
+        Float, Transform,
+    },
+    ecs::{Component, Join, Read, ReadStorage, System, VecStorage, WriteStorage},
 };
 
 use crate::systems::entities::*;
@@ -12,9 +16,7 @@ pub struct CameraMovement {
 
 impl CameraMovement {
     pub fn new() -> CameraMovement {
-        CameraMovement {
-            butter: 5.,
-        }
+        CameraMovement { butter: 5. }
     }
 }
 
@@ -46,12 +48,12 @@ impl<'s> System<'s> for CameraMovementSystem {
             let dx = px - x;
             let dy = py - y;
             let dir = dy.atan2(dx);
-            let dist = ((dx*dx + dy*dy).sqrt()).abs();
+            let dist = ((dx * dx + dy * dy).sqrt()).abs();
 
             transform.append_translation_xyz(
                 dir.cos() * dist * Float::from(camera_movement.butter * time.delta_seconds()),
                 dir.sin() * dist * Float::from(camera_movement.butter * time.delta_seconds()),
-                0.
+                0.,
             );
         }
     }

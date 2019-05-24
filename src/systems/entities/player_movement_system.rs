@@ -1,7 +1,6 @@
-
 use amethyst::{
     core::{timing::Time, Transform},
-    ecs::{Join, Read, ReadStorage, System, WriteStorage, prelude::*, NullStorage},
+    ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
     input::{InputHandler, StringBindings},
 };
 
@@ -16,13 +15,11 @@ impl Component for PlayerMovement {
 
 impl PlayerMovement {
     pub fn new() -> PlayerMovement {
-        PlayerMovement {
-            speed: 2.,
-        }
+        PlayerMovement { speed: 2. }
     }
 }
 
-pub struct PlayerMovementSystem; 
+pub struct PlayerMovementSystem;
 
 impl<'s> System<'s> for PlayerMovementSystem {
     type SystemData = (
@@ -37,13 +34,15 @@ impl<'s> System<'s> for PlayerMovementSystem {
             let (in_x, in_y) = (input.axis_value("lr"), input.axis_value("ud"));
             let (move_x, move_y) = {
                 if in_x.is_some() && in_y.is_some() {
-                    (in_x.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.,
-                    in_y.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.)
+                    (
+                        in_x.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.,
+                        in_y.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.,
+                    )
                 } else {
                     (0., 0.)
                 }
             };
-            
+
             transform.append_translation_xyz(move_x, move_y, 0.);
         }
     }

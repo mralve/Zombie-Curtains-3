@@ -2,8 +2,8 @@ use amethyst::{
     core::{timing::Time, Float, Transform},
     ecs::prelude::*,
     ecs::NullStorage,
-    ecs::{ Join, Read, ReadStorage, System, WriteStorage}, 
-    input::{ StringBindings, InputHandler }
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+    input::{InputHandler, StringBindings},
 };
 
 use crate::wire::VelSlideComp;
@@ -32,7 +32,6 @@ impl<'s> System<'s> for MoveSystem {
     );
 
     fn run(&mut self, (mut vel, mov, input, time): Self::SystemData) {
-        
         for (vel_comp, movement_comp) in (&mut vel, &mov).join() {
             let movement_ud = input.axis_value("ud");
             let movement_lr = input.axis_value("lr");

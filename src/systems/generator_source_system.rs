@@ -39,13 +39,17 @@ impl<'s> System<'s> for GeneratorSourceSystem {
             let (chunk_x, chunk_y) = {
                 let mut x = (transform.translation().x.as_f32() / 512.) as i32;
                 let mut y = (transform.translation().y.as_f32() / 512.) as i32;
-                
-                if transform.translation().x.as_f32() < 0. {x -= 1};
-                if transform.translation().y.as_f32() < 0. {y -= 1};
+
+                if transform.translation().x.as_f32() < 0. {
+                    x -= 1
+                };
+                if transform.translation().y.as_f32() < 0. {
+                    y -= 1
+                };
 
                 (x, y)
             };
-            
+
             x = chunk_x;
             y = chunk_y;
         }
@@ -68,9 +72,9 @@ impl<'s> System<'s> for GeneratorSourceSystem {
 
 fn check_chunk(x: i32, y: i32, chunks: &mut WriteStorage<GenerateChunk>) -> bool {
     for chunk in chunks.join() {
-         if chunk.x == x && chunk.y == y {
+        if chunk.x == x && chunk.y == y {
             return true;
-         }
+        }
     }
     false
 }

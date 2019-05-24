@@ -5,4 +5,3 @@ pub mod particles_bundle;
 // Lifetime comp (particle comp)
 
 // Modifier components / systems
-

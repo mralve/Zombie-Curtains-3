@@ -1,8 +1,7 @@
-use amethyst::error::Error;
-use amethyst::utils::ortho_camera;
-use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder};
-
 use crate::particles;
+use amethyst::{
+    core::SystemBundle, ecs::prelude::DispatcherBuilder, error::Error, utils::ortho_camera,
+};
 
 ///
 /// ParticlesBundle, WIP

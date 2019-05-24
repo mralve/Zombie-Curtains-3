@@ -1,8 +1,4 @@
-use amethyst::{
-    error::Error,
-    core::SystemBundle, 
-    ecs::prelude::DispatcherBuilder
-};
+use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder, error::Error};
 
 use crate::wire::MoveSystem;
 use crate::wire::VelSlideSystem;
