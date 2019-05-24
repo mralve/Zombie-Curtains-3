@@ -1,7 +1,5 @@
-use crate::particles;
-use amethyst::{
-    core::SystemBundle, ecs::prelude::DispatcherBuilder, error::Error, utils::ortho_camera,
-};
+//use crate::particles;
+use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder, error::Error};
 
 ///
 /// ParticlesBundle, WIP
@@ -18,7 +16,7 @@ impl ParticlesBundle {
 }
 
 impl<'a, 'b> SystemBundle<'a, 'b> for ParticlesBundle {
-    fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
+    fn build(self, _builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
         //builder.add(systems::ChunkGeneratorSystem, "part_system", &[]);
         Ok(())
     }

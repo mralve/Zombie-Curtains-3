@@ -1,10 +1,7 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Float;
 use amethyst::core::Transform;
 use amethyst::ecs::prelude::*;
 use amethyst::ecs::NullStorage;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
+use amethyst::ecs::{Join, ReadStorage, System, WriteStorage};
 
 use crate::systems::*;
 
@@ -35,7 +32,7 @@ impl<'s> System<'s> for GeneratorSourceSystem {
         let mut x = 0;
         let mut y = 0;
 
-        for (generator_source, transform) in (&generator_sources, &transforms).join() {
+        for (_generator_source, transform) in (&generator_sources, &transforms).join() {
             let (chunk_x, chunk_y) = {
                 let mut x = (transform.translation().x.as_f32() / 512.) as i32;
                 let mut y = (transform.translation().y.as_f32() / 512.) as i32;

@@ -1,6 +1,6 @@
 use amethyst::{
     core::{timing::Time, Transform},
-    ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
+    ecs::{prelude::*, Join, Read, System, WriteStorage},
     input::{InputHandler, StringBindings},
 };
 
@@ -29,7 +29,7 @@ impl<'s> System<'s> for PlayerMovementSystem {
         Read<'s, InputHandler<StringBindings>>,
     );
 
-    fn run(&mut self, (mut player_movements, mut transforms, time, input): Self::SystemData) {
+    fn run(&mut self, (player_movements, mut transforms, time, input): Self::SystemData) {
         for (player_movement, transform) in (&player_movements, &mut transforms).join() {
             let (in_x, in_y) = (input.axis_value("lr"), input.axis_value("ud"));
             let (move_x, move_y) = {

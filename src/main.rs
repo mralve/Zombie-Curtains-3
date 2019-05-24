@@ -10,24 +10,21 @@ mod zombie_curtains;
 extern crate amethyst;
 
 use amethyst::{
-    assets::{AssetStorage, Loader, Processor},
+    assets::Processor,
     core::{frame_limiter::FrameRateLimitStrategy, transform::TransformBundle},
     prelude::*,
     renderer::{
-        sprite::{SpriteRender, SpriteSheet},
-        sprite_visibility::SpriteVisibilitySortingSystem,
-        transparent::Transparent,
-        types::DefaultBackend,
-        RenderingSystem,
+        sprite::SpriteSheet, sprite_visibility::SpriteVisibilitySortingSystem,
+        types::DefaultBackend, RenderingSystem,
     },
-    ui::{DrawUi, UiBundle},
+    ui::UiBundle,
     utils::ortho_camera::CameraOrthoSystem,
     window::DisplayConfig,
     window::WindowBundle,
 };
 
 use crate::render_graph::RenderGraph;
-use crate::systems::systems_bundle;
+//use crate::systems::systems_bundle;
 use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::zombie_curtains::ZombieCurtains;
 
@@ -46,7 +43,7 @@ fn main() -> amethyst::Result<()> {
     use amethyst::input::{InputBundle, StringBindings};
     use amethyst::utils::application_dir;
     let binding_path = application_dir("resources")?.join("bindings.ron");
-    let Input_Bundle =
+    let input_bundle =
         InputBundle::<StringBindings>::new().with_bindings_from_file(&binding_path)?;
 
     println!("{:?}", &binding_path);
@@ -54,7 +51,7 @@ fn main() -> amethyst::Result<()> {
     let game_data = GameDataBuilder::default()
         .with_bundle(WindowBundle::from_config(config))?
         .with_bundle(TransformBundle::new())?
-        .with_bundle(Input_Bundle)?
+        .with_bundle(input_bundle)?
         .with_bundle(systems::GameSystemBundle)?
         .with_bundle(particles::particles_bundle::ParticlesBundle)?
         .with_bundle(WireEditorBundle::new())?

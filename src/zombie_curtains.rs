@@ -4,8 +4,7 @@ use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
     ecs::prelude::*,
-    ecs::Resources,
-    input::{is_close_requested, is_key_down, InputBundle},
+    input::{is_close_requested, is_key_down},
     prelude::*,
     renderer::{
         camera::{Camera, Projection},
@@ -13,7 +12,6 @@ use amethyst::{
         sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle},
         Texture,
     },
-    ui::*,
     utils::{application_dir, ortho_camera::*},
     winit::VirtualKeyCode,
 };
@@ -99,8 +97,8 @@ impl SimpleState for ZombieCurtains {
                     Trans::None
                 }
             }
-            StateEvent::Ui(ui_event) => Trans::None,
-            StateEvent::Input(input) => Trans::None,
+            StateEvent::Ui(_ui_event) => Trans::None,
+            StateEvent::Input(_input) => Trans::None,
         }
     }
 }

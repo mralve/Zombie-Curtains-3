@@ -5,7 +5,7 @@ use amethyst::{
     utils::ortho_camera::*,
 };
 
-use crate::wire::VelSlideComp;
+//use crate::wire::VelSlideComp;
 
 #[derive(Default)]
 pub struct ZoomComp {
@@ -33,11 +33,11 @@ impl<'s> System<'s> for ZoomSystem {
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (mut zoom, mut ortho, input, time): Self::SystemData) {
+    fn run(&mut self, (mut zoom, mut ortho, _input, _time): Self::SystemData) {
         /*
          */
-        let mut scroll: Option<f64>;
-        for (ortho_comp, zoom_comp) in (&mut ortho, &mut zoom).join() {
+        let mut _scroll: Option<f64>;
+        for (_ortho_comp, _zoom_comp) in (&mut ortho, &mut zoom).join() {
             //scroll = input.axis_value("scroll");
             /*
 

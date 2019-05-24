@@ -1,6 +1,6 @@
 use amethyst::{
     core::{Float, Transform},
-    ecs::{prelude::*, NullStorage},
+    ecs::prelude::*,
     renderer::SpriteRender,
 };
 
@@ -91,7 +91,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
     }
 }
 
-fn generate_tile(pos: (i32, i32)) -> usize {
+fn generate_tile(_pos: (i32, i32)) -> usize {
     let mut rng = rand::thread_rng();
     let float: f32 = rng.gen();
     let sprite_id: usize = {
