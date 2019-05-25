@@ -14,4 +14,8 @@ pub use self::camera_movement_system::*;
 pub mod generator_source_system;
 pub use self::generator_source_system::*;
 
+// FPS System
+pub mod fps_system;
+pub use self::fps_system::*;
+
 pub mod entities;

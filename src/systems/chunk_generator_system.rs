@@ -61,6 +61,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
         for chunk_comp in (&mut chunk).join() {
             if !chunk_comp.generated {
                 chunk_comp.generated = true;
+                println!("Generated chunk: x: {}, y: {}", chunk_comp.x, chunk_comp.y);
                 for y in 0..16 {
                     for x in 0..16 {
                         let mut transform = Transform::default();
@@ -91,15 +92,22 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
     }
 }
 
-fn generate_tile(_pos: (i32, i32)) -> usize {
+fn generate_tile(pos: (i32, i32)) -> usize {
     let mut rng = rand::thread_rng();
     let float: f32 = rng.gen();
     let sprite_id: usize = {
+        if pos.0 % 512 == 0 {
+            return 1;
+        } 
+        if pos.1 % 512 == 0 {
+            return 1;
+        }
+
         let r = (float * 1.).round() as usize;
         if r > 0 {
             0
         } else {
-            1
+            0
         }
     };
 

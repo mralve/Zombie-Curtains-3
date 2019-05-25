@@ -14,6 +14,7 @@ use amethyst::{
     },
     utils::{application_dir, ortho_camera::*},
     winit::VirtualKeyCode,
+    ui::*,
 };
 
 pub struct ZombieCurtains;
@@ -32,6 +33,7 @@ impl SimpleState for ZombieCurtains {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
+        init_debug(world);
         init_camera(world);
         let world_sprites = vec![
             load_sprite(
@@ -49,7 +51,7 @@ impl SimpleState for ZombieCurtains {
                 application_dir("resources")
                     .unwrap()
                     .join("textures")
-                    .join("grass2")
+                    .join("flower")
                     .to_string_lossy()
                     .to_string(),
                 "tile".to_string(),
@@ -101,6 +103,34 @@ impl SimpleState for ZombieCurtains {
             StateEvent::Input(_input) => Trans::None,
         }
     }
+}
+
+fn init_debug(world: &mut World) {
+    let font = world.read_resource::<Loader>().load(
+        "resources\\font\\MontserratSB.ttf",
+        TtfFormat,
+        (),
+        &world.read_resource(),
+    );
+
+    let fps_transform = UiTransform::new(
+        "we".to_string(),
+        Anchor::TopLeft,
+        Anchor::Middle,
+        100.,
+        -10.,
+        1.,
+        200.,
+        50.,
+    );
+
+    let fps = world
+        .create_entity()
+        .with(fps_transform)
+        .with(font.clone())
+        .build();
+
+    world.add_resource(Text { fps });
 }
 
 fn init_camera(world: &mut World) {

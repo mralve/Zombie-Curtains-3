@@ -34,6 +34,11 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
             "generator_source_system",
             &[],
         );
+        builder.add(
+            systems::FPSSystem,
+            "fps_system",
+            &[],
+        );
         Ok(())
     }
 }
