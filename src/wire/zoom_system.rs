@@ -41,7 +41,6 @@ impl<'s> System<'s> for ZoomSystem {
         let aspect = dim.aspect_ratio();
         for (cam, ortho_comp, zoom_comp) in (&mut cam, &mut ortho, &mut zoom).join() {
             scroll = input.mouse_wheel_value(false);
-            println!("{}", scroll);
             if scroll != 0.0 {
                 let scaled_amount = 30. * scroll as f32;
                 zoom_comp.camera_scale += scaled_amount * time.delta_seconds();
