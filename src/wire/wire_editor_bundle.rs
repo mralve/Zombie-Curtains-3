@@ -22,7 +22,7 @@ impl<'a, 'b> SystemBundle<'a, 'b> for WireEditorBundle {
     fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
         builder.add(MoveSystem, "editor_move_system", &[]);
         builder.add(VelSlideSystem, "editor_vel_slide_system", &[]);
-        //builder.add(ZoomSystem, "editor_zoom_system", &[]);
+        builder.add(ZoomSystem, "editor_zoom_system", &[]);
         Ok(())
     }
 }

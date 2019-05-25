@@ -11,11 +11,12 @@ use rand::prelude::*;
 #[derive(Deafult)]
 pub struct Particle {
     life: f32;
+    end: f32
 }
 
 impl Particle {
     pub fn new() -> Particle {
-        Particle { 0 }
+        Particle { 0, 6 }
     }
 }
 

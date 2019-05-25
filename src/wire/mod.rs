@@ -1,3 +1,6 @@
+// Editor state.
+pub mod editor_state;
+
 // Editor bundle
 pub mod wire_editor_bundle;
 

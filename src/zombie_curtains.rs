@@ -18,6 +18,7 @@ use amethyst::{
 
 pub struct ZombieCurtains;
 
+// TODO: A multi state world resources loading is needed!
 pub struct WorldResources {
     pub world_sprites: Vec<SpriteSheetHandle>,
     pub entity_sprites: Vec<SpriteSheetHandle>,
@@ -32,7 +33,6 @@ impl SimpleState for ZombieCurtains {
         let world = data.world;
 
         init_camera(world);
-
         let world_sprites = vec![
             load_sprite(
                 world,
@@ -133,8 +133,8 @@ fn init_camera(world: &mut World) {
         .with(transform)
         .with(CameraMovement::new())
         .with(GeneratorSource::new())
+        .with(ZoomComp::new())
         .with(camera_ortho)
-        //.with(ZoomComp::new())
         .build();
 }
 

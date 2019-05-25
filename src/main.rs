@@ -27,6 +27,7 @@ use crate::render_graph::RenderGraph;
 //use crate::systems::systems_bundle;
 use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::zombie_curtains::ZombieCurtains;
+//use crate::wire::editor_state::WireEditor;
 
 pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);

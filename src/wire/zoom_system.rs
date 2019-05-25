@@ -2,7 +2,9 @@ use amethyst::{
     core::{timing::Time, Float, Transform},
     ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
     input::{InputHandler, ScrollDirection, StringBindings},
+    renderer::camera::{Camera, Orthographic},
     utils::ortho_camera::*,
+    window::ScreenDimensions,
 };
 
 //use crate::wire::VelSlideComp;
@@ -26,33 +28,43 @@ pub struct ZoomSystem;
 
 impl<'s> System<'s> for ZoomSystem {
     type SystemData = (
-        //ReadStorage<'s, Camera>,
+        WriteStorage<'s, Camera>,
+        ReadExpect<'s, ScreenDimensions>,
         WriteStorage<'s, ZoomComp>,
         WriteStorage<'s, CameraOrtho>,
         Read<'s, InputHandler<StringBindings>>,
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (mut zoom, mut ortho, _input, _time): Self::SystemData) {
-        /*
-         */
-        let mut _scroll: Option<f64>;
-        for (_ortho_comp, _zoom_comp) in (&mut ortho, &mut zoom).join() {
-            //scroll = input.axis_value("scroll");
-            /*
+    fn run(&mut self, (mut cam, dim, mut zoom, mut ortho, input, time): Self::SystemData) {
+        let mut scroll: f64;
+        let aspect = dim.aspect_ratio();
+        for (cam, ortho_comp, zoom_comp) in (&mut cam, &mut ortho, &mut zoom).join() {
+            scroll = input.mouse_wheel_value(false);
+            println!("{}", scroll);
+            if scroll != 0.0 {
+                let scaled_amount = 30. * scroll as f32;
+                zoom_comp.camera_scale += scaled_amount * time.delta_seconds();
 
-                    if input.mouse_button_is_down() {
-                        let scaled_amount = 1000. * scroll.unwrap() as f32;
-                        zoom_comp.camera_scale += scaled_amount * time.delta_seconds();
+                ortho_comp.world_coordinates = CameraOrthoWorldCoordinates {
+                    left: -1920. / zoom_comp.camera_scale,
+                    right: 1920. / zoom_comp.camera_scale,
+                    bottom: -1080. / zoom_comp.camera_scale,
+                    top: 1080. / zoom_comp.camera_scale,
+                };
 
-                        ortho_comp.world_coordinates = CameraOrthoWorldCoordinates {
-                            left: -1920. / zoom_comp.camera_scale,
-                            right: 1920. / zoom_comp.camera_scale,
-                            bottom: -1080. / zoom_comp.camera_scale,
-                            top: 1080. / zoom_comp.camera_scale,
-                        }
-                    }
-            */
+                let offsets = ortho_comp.camera_offsets(aspect);
+
+                let (near, far) = if let Some(prev) = cam.projection().as_orthographic() {
+                    (prev.near(), prev.far())
+                } else {
+                    continue;
+                };
+
+                cam.set_projection(
+                    Orthographic::new(offsets.0, offsets.1, offsets.2, offsets.3, near, far).into(),
+                );
+            }
         }
     }
 }
