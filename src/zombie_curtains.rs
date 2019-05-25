@@ -1,4 +1,4 @@
-use crate::systems::{entities::*, *};
+use crate::systems::{entities::*, fps_system::Text, *};
 
 use amethyst::{
     assets::{AssetStorage, Loader},
@@ -12,9 +12,10 @@ use amethyst::{
         sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle},
         Texture,
     },
+    ui::*,
+    ui::{Anchor, TtfFormat, UiText, UiTransform},
     utils::{application_dir, ortho_camera::*},
     winit::VirtualKeyCode,
-    ui::*,
 };
 
 pub struct ZombieCurtains;
@@ -107,30 +108,40 @@ impl SimpleState for ZombieCurtains {
 
 fn init_debug(world: &mut World) {
     let font = world.read_resource::<Loader>().load(
-        "resources\\font\\MontserratSB.ttf",
+        application_dir("resources")
+            .unwrap()
+            .join("font")
+            .join("MontserratSB.ttf")
+            .to_string_lossy()
+            .to_string(),
         TtfFormat,
         (),
         &world.read_resource(),
     );
 
-    let fps_transform = UiTransform::new(
-        "we".to_string(),
-        Anchor::TopLeft,
+    let p1_transform = UiTransform::new(
+        "fps".to_string(),
         Anchor::Middle,
-        100.,
-        -10.,
-        1.,
+        Anchor::Middle,
+        50.,
+        50.,
+        -100.,
         200.,
         50.,
     );
 
-    let fps = world
+    let p1_score = world
         .create_entity()
-        .with(fps_transform)
-        .with(font.clone())
+        .with(p1_transform)
+        .with(UiText::new(
+            font.clone(),
+            "I AM THE ZERO FPS, HO NO!".to_string(),
+            [1.0, 1.0, 1.0, 1.0],
+            80.,
+        ))
         .build();
 
-    world.add_resource(Text { fps });
+    world.add_resource(Text { fps: p1_score });
 }
 
 fn init_camera(world: &mut World) {

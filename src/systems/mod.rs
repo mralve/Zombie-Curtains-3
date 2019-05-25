@@ -16,6 +16,7 @@ pub use self::generator_source_system::*;
 
 // FPS System
 pub mod fps_system;
-pub use self::fps_system::*;
+pub use self::fps_system::FPSSystem;
+pub use self::fps_system::Text;
 
 pub mod entities;
