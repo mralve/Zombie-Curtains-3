@@ -57,6 +57,16 @@ impl SimpleState for ZombieCurtains {
                     .to_string(),
                 "tile".to_string(),
             ),
+            load_sprite(
+                world,
+                application_dir("resources")
+                    .unwrap()
+                    .join("textures")
+                    .join("particle")
+                    .to_string_lossy()
+                    .to_string(),
+                "tile".to_string(),
+            ),
         ];
 
         let entity_sprites = vec![load_sprite(
@@ -86,12 +96,7 @@ impl SimpleState for ZombieCurtains {
             .with(sprite)
             .build();
 
-        world
-            .create_entity()
-            
-            .with(Transform::default())
-            .build();
-        
+        world.create_entity().with(Transform::default()).build();
     }
 
     fn handle_event(
