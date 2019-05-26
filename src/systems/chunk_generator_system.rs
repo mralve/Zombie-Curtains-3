@@ -58,6 +58,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
         &mut self,
         (mut chunk, entities, resources, mut transforms, mut sprites): Self::SystemData,
     ) {
+        let mut sprite;
         for chunk_comp in (&mut chunk).join() {
             if !chunk_comp.generated {
                 chunk_comp.generated = true;
@@ -68,7 +69,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         let tile_x = chunk_comp.x * 512 + x * 32;
                         let tile_y = chunk_comp.y * 512 + y * 32;
 
-                        let sprite = SpriteRender {
+                        sprite = SpriteRender {
                             sprite_sheet: resources.world_sprites[generate_tile((tile_x, tile_y))]
                                 .clone(),
                             sprite_number: 0,

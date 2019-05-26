@@ -75,22 +75,23 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
             Some(ClearValue::DepthStencil(ClearDepthStencil(1.0, 0))),
         );
 
-        let sprite_trans = graph_builder.add_node(
-            SubpassBuilder::new()
-                .with_group(DrawFlat2DTransparentDesc::new().builder())
-                .with_color(color)
-                .with_depth_stencil(depth)
-                .into_pass(),
-        );
-
         let sprite = graph_builder.add_node(
             SubpassBuilder::new()
                 .with_group(DrawFlat2DDesc::new().builder())
                 .with_color(color)
                 .with_depth_stencil(depth)
-                .with_dependency(sprite_trans)
                 .into_pass(),
         );
+
+        let sprite_trans = graph_builder.add_node(
+            SubpassBuilder::new()
+                .with_group(DrawFlat2DTransparentDesc::new().builder())
+                .with_color(color)
+                .with_depth_stencil(depth)
+                .with_dependency(sprite)
+                .into_pass(),
+        );
+
         let ui = graph_builder.add_node(
             SubpassBuilder::new()
                 .with_group(DrawUiDesc::new().builder())
@@ -102,9 +103,7 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
 
         let _present = graph_builder.add_node(
             PresentNode::builder(factory, surface, color)
-                .with_dependency(sprite_trans)
-                .with_dependency(ui)
-                .with_dependency(sprite),
+                .with_dependency(ui),
         );
 
         graph_builder

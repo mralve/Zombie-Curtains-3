@@ -1,6 +1,7 @@
 use amethyst::{
     core::{timing::Time, Float, Transform},
     ecs::{prelude::*, Entities, NullStorage},
+    prelude::*,
     renderer::sprite::{SpriteRender, SpriteSheetHandle},
 };
 
@@ -24,7 +25,13 @@ impl Particle {
         }
     }
 
-    pub fn new_ent(world: &mut World) {}
+    pub fn new_ent(self, world: &mut World, start_transform: Transform) {
+        world
+            .create_entity()
+            .with(self)
+            .with(start_transform)
+            .build();
+    }
 }
 
 impl Component for Particle {
@@ -36,12 +43,12 @@ pub struct ParticleLifeTimeSystem;
 impl<'s> System<'s> for ParticleLifeTimeSystem {
     type SystemData = (WriteStorage<'s, Particle>, Entities<'s>, Read<'s, Time>);
 
-    fn run(&mut self, (mut particle, ents, time): Self::SystemData) {
-        for (particle_comp, cur_ent) in (&mut particle, &ents).join() {
+    fn run(&mut self, (mut particle, mut entities, time): Self::SystemData) {
+        for (particle_comp, cur_ent) in (&mut particle, &entities).join() {
             if particle_comp.par_life >= particle_comp.par_end {
-
+                entities.delete(cur_ent);
             } else {
-
+                particle_comp.par_life += 1. * time.delta_seconds();
             }
         }
     }
