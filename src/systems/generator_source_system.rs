@@ -54,7 +54,7 @@ impl<'s> System<'s> for GeneratorSourceSystem {
 
             for iy in -1..2 {
                 for ix in -1..2 {
-                    println!("Do, x: {}, y: {}", ix, iy);
+                    //println!("Do, x: {}, y: {}", ix, iy);
                     if !check_chunk(x + ix, y + iy, &mut chunks) {
                         entities
                             .build_entity()

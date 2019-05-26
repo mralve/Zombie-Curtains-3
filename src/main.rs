@@ -2,7 +2,6 @@
 
 mod render_graph;
 
-mod particles;
 mod systems;
 mod wire;
 mod zombie_curtains;
@@ -54,9 +53,9 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(systems::GameSystemBundle)?
-        .with_bundle(particles::particles_bundle::ParticlesBundle)?
-        .with_bundle(WireEditorBundle::new())?
+        .with_bundle(wire::particles::particles_bundle::ParticlesBundle)?
         .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())?
+        .with_bundle(WireEditorBundle::new())?
         .with(
             Processor::<SpriteSheet>::new(),
             "sprite_sheet_processor",

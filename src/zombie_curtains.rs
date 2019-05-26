@@ -85,6 +85,13 @@ impl SimpleState for ZombieCurtains {
             .with(Transform::default())
             .with(sprite)
             .build();
+
+        world
+            .create_entity()
+            
+            .with(Transform::default())
+            .build();
+        
     }
 
     fn handle_event(
@@ -125,7 +132,7 @@ fn init_debug(world: &mut World) {
         Anchor::Middle,
         50.,
         50.,
-        -100.,
+        1.,
         200.,
         50.,
     );
@@ -154,7 +161,7 @@ fn init_camera(world: &mut World) {
         top: CAMERA_SCALE_HEIGHT / 2.,
     };
 
-    transform.set_translation_z(2.0);
+    transform.set_translation_z(3.0);
 
     use crate::wire::{MoveComp, VelSlideComp, ZoomComp};
     // Editor movement
@@ -167,13 +174,13 @@ fn init_camera(world: &mut World) {
             0.0,
             crate::HEIGHT * 0.32 * 1.5,
             0.0,
-            5.0,
+            10.0,
         )))
         //       .with(MoveComp::new())
         //       .with(VelSlideComp::new())
         .with(transform)
         .with(CameraMovement::new())
-        .with(GeneratorSource::new())
+        //.with(GeneratorSource::new())
         .with(ZoomComp::new())
         .with(camera_ortho)
         .build();

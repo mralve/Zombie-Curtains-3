@@ -26,6 +26,9 @@ impl Component for CameraMovement {
 
 pub struct CameraMovementSystem;
 
+/// Moves the camera to the desired entity that has PlayerMovement component.
+/// Add CameraMovement comp to a camera entity to make the camera start folowing the player.
+///
 impl<'s> System<'s> for CameraMovementSystem {
     type SystemData = (
         ReadStorage<'s, CameraMovement>,

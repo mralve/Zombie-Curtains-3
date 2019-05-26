@@ -1,3 +1,6 @@
+// Sub systems
+pub mod particles;
+
 // Editor state.
 pub mod editor_state;
 

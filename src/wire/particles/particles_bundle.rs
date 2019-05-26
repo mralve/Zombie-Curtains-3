@@ -1,4 +1,4 @@
-//use crate::particles;
+use crate::wire::particles::particle::ParticleLifeTimeSystem;
 use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder, error::Error};
 
 ///
@@ -16,8 +16,8 @@ impl ParticlesBundle {
 }
 
 impl<'a, 'b> SystemBundle<'a, 'b> for ParticlesBundle {
-    fn build(self, _builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
-        //builder.add(systems::ChunkGeneratorSystem, "part_system", &[]);
+    fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
+        builder.add(ParticleLifeTimeSystem, "particle_life", &[]);
         Ok(())
     }
 }
