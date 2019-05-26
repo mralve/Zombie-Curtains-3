@@ -131,29 +131,29 @@ fn init_debug(world: &mut World) {
         &world.read_resource(),
     );
 
-    let p1_transform = UiTransform::new(
+    let fps_transform = UiTransform::new(
         "fps".to_string(),
-        Anchor::Middle,
-        Anchor::Middle,
-        50.,
-        50.,
+        Anchor::TopLeft,
+        Anchor::MiddleLeft,
+        30.,
+        -25.,
         1.,
-        200.,
+        100.,
         50.,
     );
 
-    let p1_score = world
+    let fps_text = world
         .create_entity()
-        .with(p1_transform)
+        .with(fps_transform)
         .with(UiText::new(
             font.clone(),
             "I AM THE ZERO FPS, HO NO!".to_string(),
             [1.0, 1.0, 1.0, 1.0],
-            80.,
+            15.,
         ))
         .build();
 
-    world.add_resource(Text { fps: p1_score });
+    world.add_resource(Text { fps: fps_text });
 }
 
 fn init_camera(world: &mut World) {
