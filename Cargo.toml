@@ -9,9 +9,6 @@ opt-level = 3
 lto = true
 panic = 'abort'
 
-[profile.debug]
-opt-level = 2
-
 [dependencies]
 stretch = "0.2.2"
 image = "*"

@@ -24,6 +24,7 @@ use amethyst::{
 
 use crate::render_graph::RenderGraph;
 //use crate::systems::systems_bundle;
+use crate::wire::particles::particles_bundle::ParticlesBundle;
 use crate::wire::wire_editor_bundle::WireEditorBundle;
 use crate::zombie_curtains::ZombieCurtains;
 //use crate::wire::editor_state::WireEditor;
@@ -32,7 +33,7 @@ pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 fn main() -> amethyst::Result<()> {
-    //amethyst::start_logger(Default::default());
+    amethyst::start_logger(Default::default());
     let mut config = DisplayConfig::default();
     config.title = "Zombie Curtains 3".to_string();
     config.decorations = true;
@@ -53,9 +54,9 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(systems::GameSystemBundle)?
-        .with_bundle(wire::particles::particles_bundle::ParticlesBundle)?
         .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())?
         .with_bundle(WireEditorBundle::new())?
+        .with_bundle(ParticlesBundle::new())?
         .with(
             Processor::<SpriteSheet>::new(),
             "sprite_sheet_processor",

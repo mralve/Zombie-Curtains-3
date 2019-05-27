@@ -1,4 +1,5 @@
 use crate::systems::{entities::*, fps_system::Text, *};
+use crate::wire::particles::{EmitterTracker, ParticleEmitter};
 
 use amethyst::{
     assets::{AssetStorage, Loader},
@@ -34,8 +35,9 @@ impl SimpleState for ZombieCurtains {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
-        init_debug(world);
         init_camera(world);
+        initialize_debugui(world);
+
         let world_sprites = vec![
             load_sprite(
                 world,
@@ -91,12 +93,18 @@ impl SimpleState for ZombieCurtains {
 
         world
             .create_entity()
+            .with(GenerateChunk::new((0, 0)))
+            .build();
+
+        world
+            .create_entity()
             .with(PlayerMovement::new())
             .with(Transform::default())
+            .with(ParticleEmitter::new())
             .with(sprite)
             .build();
 
-        world.create_entity().with(Transform::default()).build();
+        //world.create_entity().with(Transform::default()).build();
     }
 
     fn handle_event(
@@ -118,7 +126,8 @@ impl SimpleState for ZombieCurtains {
     }
 }
 
-fn init_debug(world: &mut World) {
+/*
+fn init_textdebug(world: &mut World) {
     let font = world.read_resource::<Loader>().load(
         application_dir("resources")
             .unwrap()
@@ -135,7 +144,7 @@ fn init_debug(world: &mut World) {
         "fps".to_string(),
         Anchor::TopLeft,
         Anchor::MiddleLeft,
-        30.,
+        500.,
         -25.,
         1.,
         100.,
@@ -154,6 +163,84 @@ fn init_debug(world: &mut World) {
         .build();
 
     world.add_resource(Text { fps: fps_text });
+}
+*/
+
+/// Initialises a ui scoreboard
+fn initialize_debugui(world: &mut World) {
+    // Create a simple initial interface for rendering ui
+
+    let font = world.read_resource::<Loader>().load(
+        application_dir("resources")
+            .unwrap()
+            .join("font")
+            .join("MontserratSB.ttf")
+            .to_string_lossy()
+            .to_string(),
+        TtfFormat,
+        (),
+        &world.read_resource(),
+    );
+
+    let engine = UiTransform::new(
+        "we".to_string(),
+        Anchor::TopLeft,
+        Anchor::Middle,
+        104.,
+        -10.,
+        1.,
+        200.,
+        50.,
+    );
+    let p1_transform = UiTransform::new(
+        "P1".to_string(),
+        Anchor::TopLeft,
+        Anchor::Middle,
+        104.,
+        -25.,
+        1.,
+        200.,
+        50.,
+    );
+
+    let dt_transform = UiTransform::new(
+        "dt".to_string(),
+        Anchor::TopLeft,
+        Anchor::Middle,
+        104.,
+        -40.,
+        1.,
+        200.,
+        50.,
+    );
+
+    let mut font = UiText::new(
+        font.clone(),
+        "Debug info".to_string(),
+        [1., 1., 1., 1.],
+        15.,
+    );
+
+    font.align = Anchor::MiddleLeft;
+
+    world
+        .create_entity()
+        .with(engine)
+        .with(font.clone())
+        .build();
+
+    font.color = [0., 1., 0., 1.];
+    let fps = world
+        .create_entity()
+        .with(p1_transform)
+        .with(font.clone())
+        .build();
+
+    font.color = [1., 0.6, 0.0, 0.8];
+
+    let dt = world.create_entity().with(dt_transform).with(font).build();
+
+    world.add_resource(Text { fps });
 }
 
 fn init_camera(world: &mut World) {
