@@ -33,7 +33,7 @@ pub const WIDTH: &'static f32 = &(1920. / 1.5);
 pub const HEIGHT: &'static f32 = &(1080. / 1.5);
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    //amethyst::start_logger(Default::default());
     let mut config = DisplayConfig::default();
     config.title = "Zombie Curtains 3".to_string();
     config.decorations = true;

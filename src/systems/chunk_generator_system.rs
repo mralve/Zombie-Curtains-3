@@ -62,7 +62,7 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
         for chunk_comp in (&mut chunk).join() {
             if !chunk_comp.generated {
                 chunk_comp.generated = true;
-                //println!("Generated chunk: x: {}, y: {}", chunk_comp.x, chunk_comp.y);
+                println!("Generated chunk: x: {}, y: {}", chunk_comp.x, chunk_comp.y);
                 for y in 0..16 {
                     for x in 0..16 {
                         let mut transform = Transform::default();

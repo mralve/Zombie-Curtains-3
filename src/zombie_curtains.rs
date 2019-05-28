@@ -4,6 +4,9 @@ use crate::wire::particles::{EmitterTracker, ParticleEmitter};
 use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
+    core::Float,
+    core::timing::Time,
+    
     ecs::prelude::*,
     input::{is_close_requested, is_key_down},
     prelude::*,
@@ -81,20 +84,38 @@ impl SimpleState for ZombieCurtains {
                 .to_string(),
             "player".to_string(),
         )];
+        let grass = SpriteRender {
+            sprite_sheet: world_sprites[0].clone(),
+            sprite_number: 0,
+        };
+        
         let sprite = SpriteRender {
             sprite_sheet: entity_sprites[0].clone(),
             sprite_number: 0,
         };
 
         world.add_resource(WorldResources {
-            world_sprites: world_sprites,
+            world_sprites: world_sprites.clone(),
             entity_sprites: entity_sprites,
         });
 
-        world
-            .create_entity()
-            .with(GenerateChunk::new((0, 0)))
-            .build();
+        for y in 0..32 {
+            for x in 0..48 {
+                let mut transform = Transform::default();
+                transform.set_translation_xyz(Float::from(x as f32 * 32.), Float::from(y as f32 * 32.), 0.);
+                world
+                    .create_entity()
+                    .with(transform)
+                    .with(grass.clone())
+                    .build();
+
+                //world
+                //    .create_entity()
+                //    .with(GenerateChunk::new((x, y)))
+                //    .build();
+            }
+        }
+        
 
         world
             .create_entity()
@@ -123,6 +144,14 @@ impl SimpleState for ZombieCurtains {
             StateEvent::Ui(_ui_event) => Trans::None,
             StateEvent::Input(_input) => Trans::None,
         }
+    }
+
+    fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
+        let mut world = &data.world;
+        let time = world.read_resource::<Time>();
+        println!("FPS: {}", 1 as f32 / time.delta_seconds());
+
+        Trans::None
     }
 }
 
