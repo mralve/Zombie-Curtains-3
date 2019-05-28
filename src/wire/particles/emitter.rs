@@ -33,6 +33,8 @@ pub struct ParticleEmitter {
     pub particle_spawn_amount: i32,
     pub temp_tracker_sr: f32,
     pub particle_start_rotation: property_range,
+    pub spawn_box_radius_x: property_range,
+    pub spawn_box_radius_y: property_range,
 }
 
 impl ParticleEmitter {
@@ -48,6 +50,8 @@ impl ParticleEmitter {
                 min: -180.,
                 max: 180.,
             },
+            spawn_box_radius_x: property_range { min: -5., max: 5. },
+            spawn_box_radius_y: property_range { min: -5., max: 5. },
         }
     }
 
@@ -89,15 +93,27 @@ impl<'s> System<'s> for ParticleEmitterSystem {
     type SystemData = (
         WriteStorage<'s, ParticleEmitter>,
         WriteStorage<'s, EmitterTracker>,
+        WriteStorage<'s, Transform>,
         Entities<'s>,
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (mut particle, mut particle_tracker, mut entities, time): Self::SystemData) {
+    fn run(
+        &mut self,
+        (mut particle, mut particle_tracker, mut transforms, mut entities, time): Self::SystemData,
+    ) {
         for (particle_comp, cur_ent) in (&mut particle, &entities).join() {
             if particle_comp.temp_tracker_sr >= particle_comp.particle_spawn_rate {
                 particle_comp.temp_tracker_sr = 0.;
-                println!("I a ready to spawn!!!");
+                //let mut transform = Transform::default();
+                for _i in 0..particle_comp.particle_spawn_amount {
+                    //transform.set_translation_xyz(trans_comp.translation().x, trans_comp.translation().y, trans_comp.translation().z);
+
+                    entities
+                        .build_entity()
+                        .with(Transform::default(), &mut transforms)
+                        .build();
+                }
             }
             particle_comp.temp_tracker_sr += 1. * time.delta_seconds();
         }
