@@ -95,6 +95,10 @@ impl SimpleState for ZombieCurtains {
             .create_entity()
             .with(GenerateChunk::new((0, 0)))
             .build();
+        world
+            .create_entity()
+            .with(GenerateChunk::new((-1, 0)))
+            .build();
 
         world
             .create_entity()

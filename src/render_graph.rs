@@ -65,7 +65,7 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
             window_kind,
             1,
             surface_format,
-            Some(ClearValue::Color([0.1, 0.1, 0.1, 1.0].into())),
+            None,
         );
 
         let depth = graph_builder.create_image(
@@ -101,10 +101,8 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
                 .into_pass(),
         );
 
-        let _present = graph_builder.add_node(
-            PresentNode::builder(factory, surface, color)
-                .with_dependency(ui),
-        );
+        let _present = graph_builder
+            .add_node(PresentNode::builder(factory, surface, color).with_dependency(ui));
 
         graph_builder
     }
