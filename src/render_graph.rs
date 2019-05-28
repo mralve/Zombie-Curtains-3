@@ -12,6 +12,7 @@ use amethyst::{
                 GraphBuilder,
             },
             hal::{
+                PresentMode,
                 command::{ClearDepthStencil, ClearValue},
                 format::Format,
                 image::Kind,
@@ -61,12 +62,7 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
         let window_kind = Kind::D2(dimensions.width() as u32, dimensions.height() as u32, 1, 1);
 
         let mut graph_builder = GraphBuilder::new();
-        let color = graph_builder.create_image(
-            window_kind,
-            1,
-            surface_format,
-            None,
-        );
+        let color = graph_builder.create_image(window_kind, 1, surface_format, None);
 
         let depth = graph_builder.create_image(
             window_kind,
@@ -102,7 +98,7 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
         );
 
         let _present = graph_builder
-            .add_node(PresentNode::builder(factory, surface, color).with_dependency(ui));
+            .add_node(PresentNode::builder(factory, surface, color).with_dependency(ui).with_present_modes_priority(|_| Some(0)));
 
         graph_builder
     }
