@@ -102,20 +102,25 @@ impl<'s> System<'s> for ParticleEmitterSystem {
         &mut self,
         (mut particle, mut particle_tracker, mut transforms, mut entities, time): Self::SystemData,
     ) {
-        for (particle_comp, cur_ent) in (&mut particle, &entities).join() {
+        let mut particlesToAdd: Vec<Transform> = vec![];
+        
+        for (particle_comp, transform_comp) in (&mut particle, &mut transforms).join() {
             if particle_comp.temp_tracker_sr >= particle_comp.particle_spawn_rate {
                 particle_comp.temp_tracker_sr = 0.;
-                //let mut transform = Transform::default();
                 for _i in 0..particle_comp.particle_spawn_amount {
-                    //transform.set_translation_xyz(trans_comp.translation().x, trans_comp.translation().y, trans_comp.translation().z);
-
-                    entities
-                        .build_entity()
-                        .with(Transform::default(), &mut transforms)
-                        .build();
+                    let mut transform = Transform::default();
+                    transform.set_translation_xyz(transform_comp.translation().x, transform_comp.translation().y, transform_comp.translation().z);
+                    particlesToAdd.push(transform);
                 }
             }
             particle_comp.temp_tracker_sr += 1. * time.delta_seconds();
+        }
+
+        for transform in particlesToAdd {
+            entities
+                .build_entity()
+                .with(transform, &mut transforms)
+                .build();
         }
     }
 }
