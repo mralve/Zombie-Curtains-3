@@ -11,14 +11,14 @@ use rand::prelude::*;
 
 /// Basic property defining a particles max and min.
 #[derive(Default)]
-pub struct property_range {
+pub struct PropertyRange {
     pub max: f32,
     pub min: f32,
 }
 
-impl property_range {
-    pub fn new() -> property_range {
-        property_range { min: 0., max: 40. }
+impl PropertyRange {
+    pub fn new() -> PropertyRange {
+        PropertyRange { min: 0., max: 40. }
     }
 }
 
@@ -27,31 +27,31 @@ impl property_range {
 #[derive(Default)]
 pub struct ParticleEmitter {
     pub particle_count: f32,
-    pub particle_life: property_range,
+    pub particle_life: PropertyRange,
     pub local_space: bool,
     pub particle_spawn_rate: f32,
     pub particle_spawn_amount: i32,
     pub temp_tracker_sr: f32,
-    pub particle_start_rotation: property_range,
-    pub spawn_box_radius_x: property_range,
-    pub spawn_box_radius_y: property_range,
+    pub particle_start_rotation: PropertyRange,
+    pub spawn_box_radius_x: PropertyRange,
+    pub spawn_box_radius_y: PropertyRange,
 }
 
 impl ParticleEmitter {
     pub fn new() -> ParticleEmitter {
         ParticleEmitter {
             particle_count: 1000.0,
-            particle_life: property_range::new(),
+            particle_life: PropertyRange::new(),
             local_space: false,
             particle_spawn_rate: 1.,
             particle_spawn_amount: 2,
             temp_tracker_sr: 0.,
-            particle_start_rotation: property_range {
+            particle_start_rotation: PropertyRange {
                 min: -180.,
                 max: 180.,
             },
-            spawn_box_radius_x: property_range { min: -5., max: 5. },
-            spawn_box_radius_y: property_range { min: -5., max: 5. },
+            spawn_box_radius_x: PropertyRange { min: -5., max: 5. },
+            spawn_box_radius_y: PropertyRange { min: -5., max: 5. },
         }
     }
 
