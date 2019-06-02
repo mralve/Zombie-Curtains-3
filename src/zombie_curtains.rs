@@ -1,12 +1,14 @@
 use crate::systems::{entities::*, fps_system::Text, *};
 use crate::wire::particles::{EmitterTracker, ParticleEmitter};
+use crate::wire::ui::core::wire_create_basic_block;
+use amethyst::utils::removal::Removal;
 
 use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
     core::Float,
     core::timing::Time,
-    
+
     ecs::prelude::*,
     input::{is_close_requested, is_key_down},
     prelude::*,
@@ -40,6 +42,19 @@ impl SimpleState for ZombieCurtains {
 
         init_camera(world);
         initialize_debugui(world);
+
+        world.register::<Removal<i16>>();
+
+        wire_create_basic_block(world, [0.0, 0.0, 0.0, 1.0], UiTransform::new(
+            "we".to_string(),
+            Anchor::Middle,
+            Anchor::Middle,
+            104.,
+            -10.,
+            0.,
+            200.,
+            50.,
+        ), 0 );
 
         let world_sprites = vec![
             load_sprite(
@@ -88,7 +103,7 @@ impl SimpleState for ZombieCurtains {
             sprite_sheet: world_sprites[0].clone(),
             sprite_number: 0,
         };
-        
+
         let sprite = SpriteRender {
             sprite_sheet: entity_sprites[0].clone(),
             sprite_number: 0,
@@ -116,7 +131,7 @@ impl SimpleState for ZombieCurtains {
                 //    .build();
             }
         }
-        
+
 
         world
             .create_entity()
