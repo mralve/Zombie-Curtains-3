@@ -162,6 +162,7 @@ impl SimpleState for ZombieCurtains {
         }
     }
 
+/*
     fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
         let mut world = &data.world;
         let time = world.read_resource::<Time>();
@@ -169,6 +170,7 @@ impl SimpleState for ZombieCurtains {
 
         Trans::None
     }
+    */
 }
 
 /*
