@@ -42,8 +42,8 @@ impl<'s> System<'s> for ZoomSystem {
         for (cam, ortho_comp, zoom_comp) in (&mut cam, &mut ortho, &mut zoom).join() {
             scroll = input.mouse_wheel_value(false);
             if scroll != 0.0 {
-                let scaled_amount = 30. * scroll as f32;
-                zoom_comp.camera_scale += scaled_amount * time.delta_seconds();
+                let scaled_amount = 10. * scroll as f32;
+                zoom_comp.camera_scale += scaled_amount;
 
                 ortho_comp.world_coordinates = CameraOrthoWorldCoordinates {
                     left: -1920. / zoom_comp.camera_scale,
