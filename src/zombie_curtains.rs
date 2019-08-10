@@ -6,7 +6,6 @@ use amethyst::utils::removal::Removal;
 use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
-    core::Float,
     core::timing::Time,
 
     ecs::prelude::*,
@@ -39,12 +38,13 @@ pub const CAMERA_SCALE_WIDTH: f32 = 1920. / CAMERA_ZOOM;
 impl SimpleState for ZombieCurtains {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
+        world.register::<Removal<i16>>();
 
         init_camera(world);
         initialize_debugui(world);
 
-        world.register::<Removal<i16>>();
 
+/*
         wire_create_basic_block(world, [0.0, 0.0, 0.0, 1.0], UiTransform::new(
             "we".to_string(),
             Anchor::Middle,
@@ -55,6 +55,7 @@ impl SimpleState for ZombieCurtains {
             200.,
             50.,
         ), 0 );
+*/
 
         let world_sprites = vec![
             load_sprite(
@@ -114,23 +115,24 @@ impl SimpleState for ZombieCurtains {
             entity_sprites: entity_sprites,
         });
 
-
+        /*
         for y in 0..32 {
             for x in 0..48 {
                 let mut transform = Transform::default();
-                transform.set_translation_xyz(Float::from(x as f32 * 32.), Float::from(y as f32 * 32.), 0.);
+                transform.set_translation_xyz(x as f32 * 32., y as f32 * 32., 0.);
                 world
                     .create_entity()
                     .with(transform)
                     .with(grass.clone())
                     .build();
 
-                //world
-                //    .create_entity()
-                //    .with(GenerateChunk::new((x, y)))
-                //    .build();
+                world
+                    .create_entity()
+                    .with(GenerateChunk::new((x, y)))
+                    .build();
             }
         }
+        */
 
 
         world
@@ -141,7 +143,7 @@ impl SimpleState for ZombieCurtains {
             .with(sprite)
             .build();
 
-        //world.create_entity().with(Transform::default()).build();
+        world.create_entity().with(Transform::default()).build();
     }
 
     fn handle_event(
@@ -161,57 +163,8 @@ impl SimpleState for ZombieCurtains {
             StateEvent::Input(_input) => Trans::None,
         }
     }
-
-/*
-    fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
-        let mut world = &data.world;
-        let time = world.read_resource::<Time>();
-        println!("FPS: {}", 1 as f32 / time.delta_seconds());
-
-        Trans::None
-    }
-    */
 }
 
-/*
-fn init_textdebug(world: &mut World) {
-    let font = world.read_resource::<Loader>().load(
-        application_dir("resources")
-            .unwrap()
-            .join("font")
-            .join("MontserratSB.ttf")
-            .to_string_lossy()
-            .to_string(),
-        TtfFormat,
-        (),
-        &world.read_resource(),
-    );
-
-    let fps_transform = UiTransform::new(
-        "fps".to_string(),
-        Anchor::TopLeft,
-        Anchor::MiddleLeft,
-        500.,
-        -25.,
-        1.,
-        100.,
-        50.,
-    );
-
-    let fps_text = world
-        .create_entity()
-        .with(fps_transform)
-        .with(UiText::new(
-            font.clone(),
-            "I AM THE ZERO FPS, HO NO!".to_string(),
-            [1.0, 1.0, 1.0, 1.0],
-            15.,
-        ))
-        .build();
-
-    world.add_resource(Text { fps: fps_text });
-}
-*/
 
 /// Initialises a ui scoreboard
 fn initialize_debugui(world: &mut World) {
@@ -300,7 +253,7 @@ fn init_camera(world: &mut World) {
         top: CAMERA_SCALE_HEIGHT / 2.,
     };
 
-    transform.set_translation_z(3.0);
+    transform.set_translation_z(2.0);
 
     use crate::wire::{MoveComp, VelSlideComp, ZoomComp};
     // Editor movement
@@ -319,12 +272,13 @@ fn init_camera(world: &mut World) {
         //       .with(VelSlideComp::new())
         .with(transform)
         .with(CameraMovement::new())
-        //.with(GeneratorSource::new())
+        .with(GeneratorSource::new())
         .with(ZoomComp::new())
         .with(camera_ortho)
         .build();
 }
 
+/*
 #[derive(Debug, Clone)]
 struct LoadedSpriteSheet {
     sprite_sheet_handle: SpriteSheetHandle,
@@ -333,7 +287,6 @@ struct LoadedSpriteSheet {
     sprite_h: u32,
 }
 
-/*
 fn load_sprite_sheet(world: &mut World) -> LoadedSpriteSheet {
     let loader = world.read_resource::<Loader>();
     let texture_handle = {

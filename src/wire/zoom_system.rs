@@ -1,5 +1,5 @@
 use amethyst::{
-    core::{timing::Time, Float, Transform},
+    core::{timing::Time, Transform},
     ecs::{prelude::*, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
     input::{InputHandler, ScrollDirection, StringBindings},
     renderer::camera::{Camera, Orthographic},
@@ -40,7 +40,7 @@ impl<'s> System<'s> for ZoomSystem {
         let mut scroll: f64;
         let aspect = dim.aspect_ratio();
         for (cam, ortho_comp, zoom_comp) in (&mut cam, &mut ortho, &mut zoom).join() {
-            scroll = input.mouse_wheel_value(false);
+            scroll = input.mouse_wheel_value(false).into();
             if scroll != 0.0 {
                 let scaled_amount = 10. * scroll as f32;
                 zoom_comp.camera_scale += scaled_amount;

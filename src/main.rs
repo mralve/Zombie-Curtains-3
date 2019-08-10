@@ -1,6 +1,6 @@
-//#![windows_subsystem = "windows"]
+#![windows_subsystem = "windows"]
 
-mod render_graph;
+mod renderer_graph;
 
 mod systems;
 mod wire;
@@ -22,7 +22,7 @@ use amethyst::{
     window::WindowBundle,
 };
 
-use crate::render_graph::RenderGraph;
+use crate::renderer_graph::RendererGraph;
 //use crate::systems::systems_bundle;
 use crate::wire::particles::particles_bundle::ParticlesBundle;
 use crate::wire::wire_editor_bundle::WireEditorBundle;
@@ -41,6 +41,7 @@ fn main() -> amethyst::Result<()> {
     config.transparent = false;
     config.dimensions = Some((*WIDTH as u32, *HEIGHT as u32));
 
+
     use amethyst::input::{InputBundle, StringBindings};
     use amethyst::utils::application_dir;
     let binding_path = application_dir("resources")?.join("bindings.ron");
@@ -53,10 +54,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(WindowBundle::from_config(config))?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
-        .with_bundle(systems::GameSystemBundle)?
         .with_bundle(UiBundle::<DefaultBackend, StringBindings>::new())?
-        .with_bundle(WireEditorBundle::new())?
-        .with_bundle(ParticlesBundle::new())?
         .with(
             Processor::<SpriteSheet>::new(),
             "sprite_sheet_processor",
@@ -67,9 +65,12 @@ fn main() -> amethyst::Result<()> {
             "sprite_visibility_system",
             &["transform_system"],
         )
-        .with(CameraOrthoSystem, "orthographic_camera", &[])
+        .with_bundle(systems::GameSystemBundle)?
+        .with_bundle(WireEditorBundle::new())?
+        .with_bundle(ParticlesBundle::new())?
+        
         .with_thread_local(RenderingSystem::<DefaultBackend, _>::new(
-            RenderGraph::default(),
+            RendererGraph::default(),
         ));
 
     let mut game = Application::build("./", ZombieCurtains)?

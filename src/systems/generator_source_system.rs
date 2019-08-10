@@ -34,13 +34,13 @@ impl<'s> System<'s> for GeneratorSourceSystem {
 
         for (_generator_source, transform) in (&generator_sources, &transforms).join() {
             let (chunk_x, chunk_y) = {
-                let mut x = (transform.translation().x.as_f32() / 512.) as i32;
-                let mut y = (transform.translation().y.as_f32() / 512.) as i32;
+                let mut x = (transform.translation().x / 512.) as i32;
+                let mut y = (transform.translation().y / 512.) as i32;
 
-                if transform.translation().x.as_f32() < 0. {
+                if transform.translation().x < 0. {
                     x -= 1
                 };
-                if transform.translation().y.as_f32() < 0. {
+                if transform.translation().y < 0. {
                     y -= 1
                 };
 

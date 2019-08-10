@@ -1,5 +1,5 @@
 use amethyst::{
-    core::{timing::Time, Float, Transform},
+    core::{timing::Time, Transform},
     ecs::prelude::*,
     ecs::NullStorage,
     ecs::{Join, Read, ReadStorage, System, WriteStorage},

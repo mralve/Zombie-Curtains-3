@@ -1,5 +1,5 @@
 use amethyst::{
-    core::{Float, Transform},
+    core::{ Transform},
     ecs::prelude::*,
     renderer::SpriteRender,
 };
@@ -76,9 +76,9 @@ impl<'s> System<'s> for ChunkGeneratorSystem {
                         };
 
                         transform.set_translation_xyz(
-                            Float::from(tile_x as f32),
-                            Float::from(tile_y as f32),
-                            -1.,
+                            tile_x as f32,
+                            tile_y as f32,
+                            0.,
                         );
 
                         entities

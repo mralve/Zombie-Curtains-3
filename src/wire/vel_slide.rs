@@ -21,7 +21,7 @@ impl<'s> System<'s> for VelSlideSystem {
             }
 
             transform.set_translation_x(
-                obj_x + (movement.velocity[0] as f32 * time.delta_seconds()).into(),
+                obj_x + movement.velocity[0] as f32 * time.delta_seconds(),
             );
 
             let obj_y = transform.translation().y;
@@ -32,7 +32,7 @@ impl<'s> System<'s> for VelSlideSystem {
             }
 
             transform
-                .set_translation_y(obj_y + (movement.velocity[1] * time.delta_seconds()).into());
+                .set_translation_y(obj_y + movement.velocity[1] * time.delta_seconds());
         }
     }
 }

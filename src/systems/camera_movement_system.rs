@@ -2,7 +2,7 @@ use amethyst::{
     core::{
         math::{ComplexField, RealField},
         timing::Time,
-        Float, Transform,
+        Transform,
     },
     ecs::{Component, Join, Read, ReadStorage, System, VecStorage, WriteStorage},
 };
@@ -38,8 +38,8 @@ impl<'s> System<'s> for CameraMovementSystem {
     );
 
     fn run(&mut self, (camera_movements, mut transforms, players, time): Self::SystemData) {
-        let mut px: Float = Float::from(0.);
-        let mut py: Float = Float::from(0.);
+        let mut px = 0.;
+        let mut py = 0.;
 
         for (_player, transform) in (&players, &transforms).join() {
             px = transform.translation().x;
@@ -54,8 +54,8 @@ impl<'s> System<'s> for CameraMovementSystem {
             let dist = ((dx * dx + dy * dy).sqrt()).abs();
 
             transform.append_translation_xyz(
-                dir.cos() * dist * Float::from(camera_movement.butter * time.delta_seconds()),
-                dir.sin() * dist * Float::from(camera_movement.butter * time.delta_seconds()),
+                dir.cos() * dist * camera_movement.butter * time.delta_seconds(),
+                dir.sin() * dist * camera_movement.butter * time.delta_seconds(),
                 0.,
             );
         }

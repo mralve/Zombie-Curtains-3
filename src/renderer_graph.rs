@@ -1,38 +1,27 @@
-use std::sync::Arc;
-
 use amethyst::{
-    ecs::{ReadExpect, Resources, SystemData},
-    renderer::{
-        pass::{DrawFlat2DDesc, DrawFlat2DTransparentDesc},
-        rendy::{
-            factory::Factory,
-            graph::{
-                present::PresentNode,
-                render::{RenderGroupDesc, SubpassBuilder},
-                GraphBuilder,
-            },
-            hal::{
-                PresentMode,
-                command::{ClearDepthStencil, ClearValue},
-                format::Format,
-                image::Kind,
-            },
-        },
-        types::DefaultBackend,
-        GraphCreator,
+    ecs::{
+        ReadExpect, Resources,
+        SystemData,
     },
-    ui::DrawUiDesc,
+    renderer::{
+        pass::DrawFlat2DTransparentDesc,
+        types::DefaultBackend, Factory, Format, GraphBuilder, GraphCreator,
+        Kind, RenderGroupDesc, 
+        SubpassBuilder
+    },
     window::{ScreenDimensions, Window},
 };
 
+
 #[derive(Default)]
-pub struct RenderGraph {
+pub struct RendererGraph {
     dimensions: Option<ScreenDimensions>,
     surface_format: Option<Format>,
     dirty: bool,
 }
 
-impl GraphCreator<DefaultBackend> for RenderGraph {
+#[allow(clippy::map_clone)]
+impl GraphCreator<DefaultBackend> for RendererGraph {
     fn rebuild(&mut self, res: &Resources) -> bool {
         // Rebuild when dimensions change, but wait until at least two frames have the same.
         let new_dimensions = res.try_fetch::<ScreenDimensions>();
@@ -42,7 +31,7 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
             self.dimensions = new_dimensions.map(|d| d.clone());
             return false;
         }
-        return self.dirty;
+        self.dirty
     }
 
     fn builder(
@@ -50,9 +39,14 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
         factory: &mut Factory<DefaultBackend>,
         res: &Resources,
     ) -> GraphBuilder<DefaultBackend, Resources> {
+        use amethyst::renderer::rendy::{
+            graph::present::PresentNode,
+            hal::command::{ClearDepthStencil, ClearValue},
+        };
+
         self.dirty = false;
 
-        let window = <ReadExpect<'_, Arc<Window>>>::fetch(res);
+        let window = <ReadExpect<'_, Window>>::fetch(res);
         let surface = factory.create_surface(&window);
         // cache surface format to speed things up
         let surface_format = *self
@@ -62,7 +56,12 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
         let window_kind = Kind::D2(dimensions.width() as u32, dimensions.height() as u32, 1, 1);
 
         let mut graph_builder = GraphBuilder::new();
-        let color = graph_builder.create_image(window_kind, 1, surface_format, None);
+        let color = graph_builder.create_image(
+            window_kind,
+            1,
+            surface_format,
+            Some(ClearValue::Color([0.0, 0.0, 0.0, 1.0].into())),
+        );
 
         let depth = graph_builder.create_image(
             window_kind,
@@ -73,16 +72,14 @@ impl GraphCreator<DefaultBackend> for RenderGraph {
 
         let sprite = graph_builder.add_node(
             SubpassBuilder::new()
-                .with_group(DrawFlat2DDesc::new().builder())
                 .with_group(DrawFlat2DTransparentDesc::new().builder())
-                .with_group(DrawUiDesc::new().builder())
                 .with_color(color)
                 .with_depth_stencil(depth)
                 .into_pass(),
         );
 
         let _present = graph_builder
-            .add_node(PresentNode::builder(factory, surface, color).with_dependency(sprite).with_present_modes_priority(|_| Some(0)));
+            .add_node(PresentNode::builder(factory, surface, color).with_dependency(sprite));
 
         graph_builder
     }
