@@ -16,7 +16,7 @@ pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions) {
     // Center the camera in the middle of the screen, and let it cover
     // the entire screen
     let mut transform = Transform::default();
-    transform.set_translation_xyz(dimensions.width() * 0.5, dimensions.height() * 0.5, 1.);
+    transform.set_translation_xyz(dimensions.width() * 0.5, dimensions.height() * 0.5, 2.);
 
     world
         .create_entity()
