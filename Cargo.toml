@@ -10,11 +10,11 @@ lto = true
 panic = 'abort'
 
 [dependencies]
-stretch = "0.2.2"
-image = "*"
-derive-new = "0.5.6"
-rand = "*"
+stretch = "0.3.2"
+image = "0.22.3"
+derive-new = "0.5.8"
+rand = "0.7.2"
 
 [dependencies.amethyst]
-git = "https://github.com/amethyst/amethyst"
+version = "0.13.2"
 features = ["vulkan", "nightly", "no-slow-safety-checks"]
