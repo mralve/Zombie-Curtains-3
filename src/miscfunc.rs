@@ -8,6 +8,7 @@ use amethyst::{
     utils::removal::Removal,
 };
 
+use crate::systems;
 
 /// This creates the in-game camera.
 pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions, zoom: f32) {
@@ -20,6 +21,7 @@ pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions, zoom: f32) 
         .create_entity()
         .with(Camera::standard_2d(dimensions.width() * zoom, dimensions.height() * zoom))
         .with(transform)
+        .with(systems::camera_movement_system::CameraMovement::new())
         .with(Removal::new(-1))
         .build();
 }

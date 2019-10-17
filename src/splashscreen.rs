@@ -24,9 +24,9 @@ impl SimpleState for SplashScreen {
 
         let sprites = miscfunc::load_spritesheet(world, "sprites/logo");
 
-        miscfunc::init_sprite(world, sprites.clone(), 0, dimensions.width() * 0.5, dimensions.height() * 0.5, 0.);
+        miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., 0.);
 
-        miscfunc::init_sprite(world, sprites.clone(), 1, dimensions.width() * 0.5, dimensions.height() * 0.5 - 40.0, 0.);
+        miscfunc::init_sprite(world, sprites.clone(), 1, 0., 0. - 40.0, 0.);
     }
 
     fn handle_event(
