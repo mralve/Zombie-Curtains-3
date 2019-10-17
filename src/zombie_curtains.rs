@@ -3,10 +3,13 @@ use amethyst::{
     core::transform::Transform,
     input::{get_key, is_close_requested, is_key_down, VirtualKeyCode},
     window::ScreenDimensions,
+    renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
     utils::removal::exec_removal,
+    utils::removal::Removal,
 };
 
 use crate::miscfunc;
+use crate::systems;
 
 pub struct ZombieCurtains;
 
@@ -24,9 +27,15 @@ impl SimpleState for ZombieCurtains {
         
         let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
-        miscfunc::init_camera(world, &dimensions);
+        miscfunc::init_camera(world, &dimensions, 0.5);
 
         println!("In-game state now active!");
+
+        create_player(world, &dimensions);
+
+        let sprites = miscfunc::load_spritesheet(world, "textures/world_sprites");
+
+        miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., -1.);
 
     }
 
@@ -51,4 +60,26 @@ impl SimpleState for ZombieCurtains {
         // Keep going
         Trans::None
     }
+}
+
+pub fn create_player(world: &mut World, dimensions: &ScreenDimensions){
+
+    let sprites = miscfunc::load_spritesheet(world, "sprites/player/player");
+
+    let mut transform = Transform::default();
+    transform.set_translation_xyz( 0., 0., 0.);
+
+    let renderer = SpriteRender {
+        sprite_sheet: sprites,
+        sprite_number: 0,
+    };
+
+    world
+        .create_entity()
+        .with(renderer)
+        .with(transform)
+        .with(systems::entities::player_movement_system::PlayerMovement::new())
+        .with(Removal::new(-1))
+        .build();
+
 }
