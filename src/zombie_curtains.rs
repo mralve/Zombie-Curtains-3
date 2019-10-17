@@ -33,6 +33,10 @@ impl SimpleState for ZombieCurtains {
 
         create_player(world, &dimensions);
 
+        let sprites = miscfunc::load_spritesheet(world, "textures/world_sprites");
+
+        miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., -1.);
+
     }
 
     fn handle_event(
@@ -63,7 +67,7 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions){
     let sprites = miscfunc::load_spritesheet(world, "sprites/player/player");
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz( dimensions.width() * 0.5, dimensions.height() * 0.5, 0.);
+    transform.set_translation_xyz( 0., 0., 0.);
 
     let renderer = SpriteRender {
         sprite_sheet: sprites,

@@ -53,10 +53,21 @@ pub fn load_spritesheet(world: &mut World, path: &str) -> Handle<SpriteSheet> {
     sheet_handle
 }
 
+pub fn load_texture(world: &mut World, path: &str) -> Handle<Texture> {
+    let loader = world.read_resource::<Loader>();
+    let texture_storage = world.read_resource::<AssetStorage<Texture>>();
+    return loader.load(
+        format!("{}{}", path, ".png"),
+        ImageFormat::default(),
+        (),
+        &texture_storage,
+    )
+}
+
 /// Just creates a sprite at the given pos
 pub fn init_sprite(world: &mut World, sprite: Handle<SpriteSheet>, target_sprite: usize, x_offset: f32, y_offset: f32, z_offset: f32 ) {
     let mut transform = Transform::default();
-    transform.set_translation_xyz( x_offset, y_offset, 0.);
+    transform.set_translation_xyz(x_offset, y_offset, z_offset);
 
     let renderer = SpriteRender {
         sprite_sheet: sprite,
