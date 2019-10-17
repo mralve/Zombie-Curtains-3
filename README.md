@@ -8,6 +8,7 @@ You only need the following setup on your computer to run the game.
 
 ```bash
 git clone https://github.com/mralve/Zombie-Curtains-3.git
+cd Zombie-Curtains-3
 cargo run --release
 ```
 - Note, running with --release tag takes more time to compile, but has the best runtime performance. excluding the tag enters debug mode, good for general development.
