@@ -20,7 +20,7 @@ impl SimpleState for SplashScreen {
         
         let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
-        miscfunc::init_camera(world, &dimensions);
+        miscfunc::init_camera(world, &dimensions, 1.0);
 
         let sprites = miscfunc::load_spritesheet(world, "sprites/logo");
 
