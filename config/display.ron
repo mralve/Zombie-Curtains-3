@@ -1,4 +1,4 @@
 (
-    title: "ZombieCurtains 3",
-    dimensions: Some((800, 600)),
+    title: "Zombie Curtains 3",
+    dimensions: Some((1200, 700)),
 )

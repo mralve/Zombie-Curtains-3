@@ -11,9 +11,11 @@ use amethyst::{
     utils::application_root_dir,
 };
 
+mod splashscreen;
 mod zombie_curtains;
 pub mod miscfunc;
 
+use crate::splashscreen::SplashScreen;
 use crate::zombie_curtains::ZombieCurtains;
 
 fn main() -> amethyst::Result<()> {
@@ -38,7 +40,7 @@ fn main() -> amethyst::Result<()> {
     )?;
 
     let assets_dir = app_root.join("assets");
-    let mut game = Application::new(assets_dir, ZombieCurtains, game_data)?;
+    let mut game = Application::new(assets_dir, SplashScreen, game_data)?;
     game.run();
 
     Ok(())
