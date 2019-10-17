@@ -20,9 +20,7 @@ impl<'s> System<'s> for VelSlideSystem {
                 movement.velocity[0] = 0.;
             }
 
-            transform.set_translation_x(
-                obj_x + movement.velocity[0] as f32 * time.delta_seconds(),
-            );
+            transform.set_translation_x(obj_x + movement.velocity[0] as f32 * time.delta_seconds());
 
             let obj_y = transform.translation().y;
             movement.velocity[1] *= 1. - (movement.drag * time.delta_seconds());
@@ -31,8 +29,7 @@ impl<'s> System<'s> for VelSlideSystem {
                 movement.velocity[1] = 0.;
             }
 
-            transform
-                .set_translation_y(obj_y + movement.velocity[1] * time.delta_seconds());
+            transform.set_translation_y(obj_y + movement.velocity[1] * time.delta_seconds());
         }
     }
 }

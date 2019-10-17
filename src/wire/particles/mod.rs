@@ -1,5 +1,5 @@
-pub mod particle;
 pub mod emitter;
+pub mod particle;
 pub mod particles_bundle;
 
 // Spawner comp / system

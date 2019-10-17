@@ -1,14 +1,27 @@
 use amethyst::{
-    assets::{AssetStorage, Loader, Handle},
-    core::transform::Transform,
+    assets::{AssetStorage, Handle, Loader},
+    core::{
+        math::{Point3, Vector2, Vector3},
+        transform::Transform,
+    },
     ecs::prelude::{Component, DenseVecStorage},
     prelude::*,
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
-    window::ScreenDimensions,
     utils::removal::Removal,
+    window::ScreenDimensions,
 };
 
 use crate::systems;
+
+use amethyst_tiles::{RenderTiles2D, Tile, TileMap};
+
+#[derive(Default, Clone)]
+pub struct BaseTile;
+impl Tile for BaseTile {
+    fn sprite(&self, _: Point3<u32>, _: &World) -> Option<usize> {
+        Some(16)
+    }
+}
 
 /// This creates the in-game camera.
 pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions, zoom: f32) {
@@ -19,7 +32,10 @@ pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions, zoom: f32) 
 
     world
         .create_entity()
-        .with(Camera::standard_2d(dimensions.width() * zoom, dimensions.height() * zoom))
+        .with(Camera::standard_2d(
+            dimensions.width() * zoom,
+            dimensions.height() * zoom,
+        ))
         .with(transform)
         .with(systems::camera_movement_system::CameraMovement::new())
         .with(Removal::new(-1))
@@ -37,7 +53,6 @@ pub fn load_spritesheet(world: &mut World, path: &str) -> Handle<SpriteSheet> {
             &texture_storage,
         )
     };
- 
     // Load the SpriteSheet definition file, which contains metadata on our
     // SpriteSheet texture.
     let sheet_handle = {
@@ -61,11 +76,18 @@ pub fn load_texture(world: &mut World, path: &str) -> Handle<Texture> {
         ImageFormat::default(),
         (),
         &texture_storage,
-    )
+    );
 }
 
 /// Just creates a sprite at the given pos
-pub fn init_sprite(world: &mut World, sprite: Handle<SpriteSheet>, target_sprite: usize, x_offset: f32, y_offset: f32, z_offset: f32 ) {
+pub fn init_sprite(
+    world: &mut World,
+    sprite: Handle<SpriteSheet>,
+    target_sprite: usize,
+    x_offset: f32,
+    y_offset: f32,
+    z_offset: f32,
+) {
     let mut transform = Transform::default();
     transform.set_translation_xyz(x_offset, y_offset, z_offset);
 
