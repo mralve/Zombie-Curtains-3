@@ -3,6 +3,7 @@ use amethyst::ecs::prelude::*;
 use amethyst::ecs::NullStorage;
 use amethyst::ecs::{Join, ReadStorage, System, WriteStorage};
 
+/*
 use crate::systems::*;
 
 #[derive(Default)]
@@ -77,3 +78,4 @@ fn check_chunk(x: i32, y: i32, chunks: &mut WriteStorage<GenerateChunk>) -> bool
     }
     false
 }
+*/

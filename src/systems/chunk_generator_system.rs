@@ -3,7 +3,7 @@ use amethyst::{
     ecs::prelude::*,
     renderer::SpriteRender,
 };
-
+/*
 use crate::zombie_curtains::WorldResources;
 extern crate rand;
 use rand::prelude::*;
@@ -114,3 +114,4 @@ fn generate_tile(pos: (i32, i32)) -> usize {
 
     sprite_id
 }
+*/

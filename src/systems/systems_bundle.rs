@@ -1,7 +1,11 @@
-use amethyst::error::Error;
-use amethyst::utils::ortho_camera;
-use amethyst::{core::SystemBundle, ecs::prelude::DispatcherBuilder};
-
+use amethyst::{
+    error::Error,
+    utils::ortho_camera,
+    core::{
+        ecs::{DispatcherBuilder, World},
+        SystemBundle,
+    }
+};
 use crate::systems;
 use crate::systems::entities;
 
@@ -20,8 +24,13 @@ impl GameSystemBundle {
 }
 
 impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
-    fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<(), Error> {
-        builder.add(systems::ChunkGeneratorSystem, "game_chunk_generator", &[]);
+    fn build(
+        mut self, 
+        world: &mut World,
+        builder: &mut DispatcherBuilder<'a, 'b>
+        ) -> Result<(), Error> {
+        //builder.add(systems::ChunkGeneratorSystem, "game_chunk_generator", &[]);
+        //builder.add(systems::GeneratorSourceSystem, "generator_source_system", &[]);
         builder.add(ortho_camera::CameraOrthoSystem, "camera_ortho_system", &[]);
         builder.add(
             entities::player_movement_system::PlayerMovementSystem,
@@ -29,12 +38,8 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
             &[],
         );
         builder.add(systems::CameraMovementSystem, "camera_movement_system", &[]);
-        builder.add(
-            systems::GeneratorSourceSystem,
-            "generator_source_system",
-            &[],
-        );
-		builder.add(systems::FPSSystem, "fps_text", &[]);
+
+		//builder.add(systems::FPSSystem, "fps_text", &[]);
 
         Ok(())
     }
