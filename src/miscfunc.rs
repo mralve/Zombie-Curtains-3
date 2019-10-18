@@ -39,7 +39,7 @@ pub fn init_camera(world: &mut World, dimensions: &ScreenDimensions, zoom: f32) 
             dimensions.height() * zoom,
         ))
         .with(transform)
-        .with(systems::camera_movement_system::CameraMovement::new())
+        .with(systems::camera_movement::CameraMovement::new())
         .with(Removal::new(-1))
         .build();
 }
