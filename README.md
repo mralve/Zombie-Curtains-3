@@ -17,7 +17,7 @@ cargo run --release
 
 Current short term goals.
 - [x] Refactor and upgrade to Amethyst 0.13.2
-- [ ] Implement Amethyst tilemaps.
+- [x] Implement basic tilemap.
 - [ ] Re-implement basic player mechanics. 
 - [ ] Basic combat.
 

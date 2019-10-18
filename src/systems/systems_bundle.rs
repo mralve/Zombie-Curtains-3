@@ -1,13 +1,13 @@
+use crate::systems;
+use crate::systems::entities;
 use amethyst::{
-    error::Error,
-    utils::ortho_camera,
     core::{
         ecs::{DispatcherBuilder, World},
         SystemBundle,
-    }
+    },
+    error::Error,
+    utils::ortho_camera,
 };
-use crate::systems;
-use crate::systems::entities;
 
 ///
 /// Systems bundle, the bundle for the Zombie Curtains game systems
@@ -25,10 +25,10 @@ impl GameSystemBundle {
 
 impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
     fn build(
-        mut self, 
+        mut self,
         world: &mut World,
-        builder: &mut DispatcherBuilder<'a, 'b>
-        ) -> Result<(), Error> {
+        builder: &mut DispatcherBuilder<'a, 'b>,
+    ) -> Result<(), Error> {
         //builder.add(systems::ChunkGeneratorSystem, "game_chunk_generator", &[]);
         //builder.add(systems::GeneratorSourceSystem, "generator_source_system", &[]);
         builder.add(ortho_camera::CameraOrthoSystem, "camera_ortho_system", &[]);
@@ -39,7 +39,7 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
         );
         builder.add(systems::CameraMovementSystem, "camera_movement_system", &[]);
 
-		//builder.add(systems::FPSSystem, "fps_text", &[]);
+        //builder.add(systems::FPSSystem, "fps_text", &[]);
 
         Ok(())
     }

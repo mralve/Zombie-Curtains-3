@@ -1,12 +1,16 @@
 use amethyst::{
-    prelude::*,
-    core::transform::Transform,
+    core::{
+        math::{Point3, Vector2, Vector3},
+        transform::Transform,
+    },
     input::{get_key, is_close_requested, is_key_down, VirtualKeyCode},
-    window::ScreenDimensions,
+    prelude::*,
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
     utils::removal::exec_removal,
     utils::removal::Removal,
+    window::ScreenDimensions,
 };
+use amethyst_tiles::TileMap;
 
 use crate::miscfunc;
 use crate::systems;
@@ -14,7 +18,6 @@ use crate::systems;
 pub struct ZombieCurtains;
 
 impl SimpleState for ZombieCurtains {
-
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
@@ -24,19 +27,25 @@ impl SimpleState for ZombieCurtains {
         // Force the world to be up to date. This is normally called automatically at the end of the
         // frame by amethyst.
         world.maintain();
-        
         let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
         miscfunc::init_camera(world, &dimensions, 0.5);
-
-        println!("In-game state now active!");
 
         create_player(world, &dimensions);
 
         let sprites = miscfunc::load_spritesheet(world, "textures/world_sprites");
 
-        miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., -1.);
+        let map = TileMap::<miscfunc::BaseTile>::new(
+            Vector3::new(32, 32, 1),
+            Vector3::new(32, 32, 1),
+            Some(sprites),
+        );
 
+        let _map_entity = world
+            .create_entity()
+            .with(map)
+            .with(Transform::default())
+            .build();
     }
 
     fn handle_event(
@@ -54,7 +63,6 @@ impl SimpleState for ZombieCurtains {
             if let Some(event) = get_key(&event) {
                 //info!("handling key event: {:?}", event);
             }
-
         }
 
         // Keep going
@@ -62,12 +70,11 @@ impl SimpleState for ZombieCurtains {
     }
 }
 
-pub fn create_player(world: &mut World, dimensions: &ScreenDimensions){
-
+pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
     let sprites = miscfunc::load_spritesheet(world, "sprites/player/player");
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz( 0., 0., 0.);
+    transform.set_translation_xyz(0., 0., 0.);
 
     let renderer = SpriteRender {
         sprite_sheet: sprites,
@@ -81,5 +88,4 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions){
         .with(systems::entities::player_movement_system::PlayerMovement::new())
         .with(Removal::new(-1))
         .build();
-
 }

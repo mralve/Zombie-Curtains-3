@@ -1,8 +1,4 @@
-use amethyst::{
-    core::{ Transform},
-    ecs::prelude::*,
-    renderer::SpriteRender,
-};
+use amethyst::{core::Transform, ecs::prelude::*, renderer::SpriteRender};
 /*
 use crate::zombie_curtains::WorldResources;
 extern crate rand;
