@@ -1,5 +1,8 @@
 use amethyst::{
-    core::transform::Transform,
+    core::{
+        math::{Point3, Vector2, Vector3},
+        transform::Transform,
+    },
     input::{get_key, is_close_requested, is_key_down, VirtualKeyCode},
     prelude::*,
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
@@ -28,13 +31,21 @@ impl SimpleState for ZombieCurtains {
 
         miscfunc::init_camera(world, &dimensions, 0.5);
 
-        println!("In-game state now active!");
-
         create_player(world, &dimensions);
 
         let sprites = miscfunc::load_spritesheet(world, "textures/world_sprites");
 
-        //miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., -1.);
+        let map = TileMap::<miscfunc::BaseTile>::new(
+            Vector3::new(32, 32, 1),
+            Vector3::new(32, 32, 1),
+            Some(sprites),
+        );
+
+        let _map_entity = world
+            .create_entity()
+            .with(map)
+            .with(Transform::default())
+            .build();
     }
 
     fn handle_event(

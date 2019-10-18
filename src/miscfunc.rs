@@ -10,6 +10,7 @@ use amethyst::{
     utils::removal::Removal,
     window::ScreenDimensions,
 };
+use rand::{thread_rng, Rng};
 
 use crate::systems;
 
@@ -19,7 +20,8 @@ use amethyst_tiles::{RenderTiles2D, Tile, TileMap};
 pub struct BaseTile;
 impl Tile for BaseTile {
     fn sprite(&self, _: Point3<u32>, _: &World) -> Option<usize> {
-        Some(16)
+        //let mut rng = thread_rng(); rng.gen_range(0, 2)
+        Some(0)
     }
 }
 
