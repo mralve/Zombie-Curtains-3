@@ -38,7 +38,11 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
             &[],
         );
         builder.add(systems::CameraMovementSystem, "camera_movement_system", &[]);
-
+        builder.add(
+            systems::entities::SpriteFlipperSystem,
+            "sprite_flipper_system",
+            &[],
+        );
         //builder.add(systems::FPSSystem, "fps_text", &[]);
 
         Ok(())

@@ -86,6 +86,7 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
         .with(renderer)
         .with(transform)
         .with(systems::entities::player_movement::PlayerMovement::new())
+        .with(systems::entities::sprite_flipper::SpriteFlipper::new())
         .with(Removal::new(-1))
         .build();
 }

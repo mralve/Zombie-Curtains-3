@@ -1,12 +1,14 @@
 use amethyst::{
-    core::{timing::Time, Transform},
+    core::{math::Vector3, timing::Time, Transform},
     ecs::{prelude::*, Join, Read, System, WriteStorage},
     input::{InputHandler, StringBindings},
 };
 
 #[derive(Default)]
 pub struct SpriteFlipper {
-    speed: f32,
+    pub sensitivity: f32,
+    pub last_x: f32,
+    pub distance_trigger: f32,
 }
 
 impl Component for SpriteFlipper {
@@ -15,10 +17,14 @@ impl Component for SpriteFlipper {
 
 impl SpriteFlipper {
     pub fn new() -> SpriteFlipper {
-        SpriteFlipper { speed: 2. }
+        SpriteFlipper {
+            sensitivity: 0.04,
+            last_x: 0.0,
+            distance_trigger: 0.0,
+        }
     }
 }
-
+// 1034684314
 pub struct SpriteFlipperSystem;
 
 impl<'s> System<'s> for SpriteFlipperSystem {
@@ -26,24 +32,25 @@ impl<'s> System<'s> for SpriteFlipperSystem {
         WriteStorage<'s, SpriteFlipper>,
         WriteStorage<'s, Transform>,
         Read<'s, Time>,
-        Read<'s, InputHandler<StringBindings>>,
     );
 
-    fn run(&mut self, (player_movements, mut transforms, time, input): Self::SystemData) {
-        for (player_movement, transform) in (&player_movements, &mut transforms).join() {
-            let (in_x, in_y) = (input.axis_value("lr"), input.axis_value("ud"));
-            let (move_x, move_y) = {
-                if in_x.is_some() && in_y.is_some() {
-                    (
-                        in_x.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.,
-                        in_y.unwrap() as f32 * player_movement.speed * time.delta_seconds() * 100.,
-                    )
-                } else {
-                    (0., 0.)
-                }
-            };
+    fn run(&mut self, (mut flippers, mut transforms, time): Self::SystemData) {
+        for (flipper, transform) in (&mut flippers, &mut transforms).join() {
+            if flipper.distance_trigger >= 0.07 {
+                flipper.distance_trigger = 0.0;
 
-            transform.append_translation_xyz(move_x, move_y, 0.);
+                let cur_x = transform.translation().x;
+
+                if flipper.last_x > cur_x - flipper.distance_trigger {
+                    transform.set_scale(Vector3::new(-1.0, 1.0, 1.0));
+                } else if flipper.last_x < cur_x + flipper.distance_trigger {
+                    transform.set_scale(Vector3::new(1.0, 1.0, 1.0));
+                }
+
+                // Sample the current x after calc on the one before.
+                flipper.last_x = cur_x;
+            }
+            flipper.distance_trigger += 1.0 * time.delta_seconds();
         }
     }
 }
