@@ -6,7 +6,6 @@ use amethyst::{
 
 #[derive(Default)]
 pub struct SpriteFlipper {
-    pub sensitivity: f32,
     pub last_x: f32,
     pub distance_trigger: f32,
 }
@@ -18,7 +17,6 @@ impl Component for SpriteFlipper {
 impl SpriteFlipper {
     pub fn new() -> SpriteFlipper {
         SpriteFlipper {
-            sensitivity: 0.04,
             last_x: 0.0,
             distance_trigger: 0.0,
         }
@@ -35,6 +33,7 @@ impl<'s> System<'s> for SpriteFlipperSystem {
     );
 
     fn run(&mut self, (mut flippers, mut transforms, time): Self::SystemData) {
+        let delta = time.delta_seconds();
         for (flipper, transform) in (&mut flippers, &mut transforms).join() {
             if flipper.distance_trigger >= 0.05 {
                 flipper.distance_trigger = 0.0;
@@ -50,7 +49,7 @@ impl<'s> System<'s> for SpriteFlipperSystem {
                 // Sample the current x after calc on the one before.
                 flipper.last_x = cur_x;
             }
-            flipper.distance_trigger += 1.0 * time.delta_seconds();
+            flipper.distance_trigger += 1.0 * delta;
         }
     }
 }
