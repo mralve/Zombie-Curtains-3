@@ -36,7 +36,7 @@ impl<'s> System<'s> for SpriteFlipperSystem {
 
     fn run(&mut self, (mut flippers, mut transforms, time): Self::SystemData) {
         for (flipper, transform) in (&mut flippers, &mut transforms).join() {
-            if flipper.distance_trigger >= 0.07 {
+            if flipper.distance_trigger >= 0.05 {
                 flipper.distance_trigger = 0.0;
 
                 let cur_x = transform.translation().x;
