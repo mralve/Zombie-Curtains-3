@@ -1,8 +1,14 @@
 use amethyst::{
+    assets::{AssetStorage, Handle, Loader},
     core::{math::Vector3, timing::Time, Transform},
     ecs::{prelude::*, Join, Read, System, WriteStorage},
     input::{InputHandler, StringBindings},
+    renderer::SpriteSheet,
 };
+
+pub struct Sprite_Shadow {
+    pub sprite: Handle<SpriteSheet>,
+}
 
 #[derive(Default)]
 pub struct E_Shadow {
@@ -25,6 +31,7 @@ impl<'s> System<'s> for E_ShadowSystem {
     type SystemData = (ReadStorage<'s, E_Shadow>, WriteStorage<'s, Transform>);
 
     fn run(&mut self, (offsets, mut transforms): Self::SystemData) {
+        let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
         for (offset, transform) in (&offsets, &mut transforms).join() {}
     }
 }

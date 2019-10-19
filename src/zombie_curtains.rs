@@ -29,6 +29,12 @@ impl SimpleState for ZombieCurtains {
         world.maintain();
         let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
+        let shadow = systems::entities::Sprite_Shadow {
+            sprite: miscfunc::load_spritesheet(world, "sprites/entities/e_shadow"),
+        };
+
+        world.insert(shadow);
+
         miscfunc::init_camera(world, &dimensions, 0.5);
 
         create_player(world, &dimensions);
@@ -72,7 +78,6 @@ impl SimpleState for ZombieCurtains {
 
 pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
     let sprites = miscfunc::load_spritesheet(world, "sprites/player/player");
-    let entity_shadow = miscfunc::load_spritesheet(world, "sprites/entities/e_shadow");
 
     let mut transform = Transform::default();
     transform.set_translation_xyz(0., 0., 0.);
@@ -82,16 +87,11 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
         sprite_number: 0,
     };
 
-    let shadow_renderer = SpriteRender {
-        sprite_sheet: entity_shadow,
-        sprite_number: 0,
-    };
-
     world
         .create_entity()
-        .with(shadow_renderer)
         .with(renderer)
         .with(transform)
+        .with(systems::entities::E_Shadow::new())
         .with(systems::entities::player_movement::PlayerMovement::new())
         .with(systems::entities::sprite_flipper::SpriteFlipper::new())
         .with(Removal::new(-1))
