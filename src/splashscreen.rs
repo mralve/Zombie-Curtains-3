@@ -8,6 +8,7 @@ use amethyst::{
 };
 
 use crate::miscfunc;
+use crate::systems;
 use crate::zombie_curtains::ZombieCurtains;
 
 pub struct SplashScreen;
@@ -25,6 +26,11 @@ impl SimpleState for SplashScreen {
         miscfunc::init_sprite(world, sprites.clone(), 0, 0., 0., 0.);
 
         miscfunc::init_sprite(world, sprites.clone(), 1, 0., 0. - 40.0, 0.);
+
+        let shadow = systems::entities::Sprite_Shadow {
+            sprite: miscfunc::load_spritesheet(world, "sprites/entities/e_shadow"),
+        };
+        world.insert(shadow);
     }
 
     fn handle_event(

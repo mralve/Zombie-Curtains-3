@@ -43,6 +43,7 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameSystemBundle {
             "sprite_flipper_system",
             &[],
         );
+        builder.add(systems::entities::E_ShadowSystem, "shadow_system", &[]);
         //builder.add(systems::FPSSystem, "fps_text", &[]);
 
         Ok(())
