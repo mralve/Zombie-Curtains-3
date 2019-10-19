@@ -91,7 +91,7 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
         .create_entity()
         .with(renderer)
         .with(transform)
-        .with(systems::entities::E_Shadow::new())
+        //.with(systems::entities::E_Shadow::new())
         .with(systems::entities::player_movement::PlayerMovement::new())
         .with(systems::entities::sprite_flipper::SpriteFlipper::new())
         .with(Removal::new(-1))

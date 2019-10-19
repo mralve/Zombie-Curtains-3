@@ -31,7 +31,7 @@ impl<'s> System<'s> for E_ShadowSystem {
     type SystemData = (ReadStorage<'s, E_Shadow>, WriteStorage<'s, Transform>);
 
     fn run(&mut self, (offsets, mut transforms): Self::SystemData) {
-        let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
-        for (offset, transform) in (&offsets, &mut transforms).join() {}
+        //let dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
+        //for (offset, transform) in (&offsets, &mut transforms).join() {}
     }
 }
