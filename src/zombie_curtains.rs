@@ -72,6 +72,7 @@ impl SimpleState for ZombieCurtains {
 
 pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
     let sprites = miscfunc::load_spritesheet(world, "sprites/player/player");
+    let entity_shadow = miscfunc::load_spritesheet(world, "sprites/entities/e_shadow");
 
     let mut transform = Transform::default();
     transform.set_translation_xyz(0., 0., 0.);
@@ -81,8 +82,14 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
         sprite_number: 0,
     };
 
+    let shadow_renderer = SpriteRender {
+        sprite_sheet: entity_shadow,
+        sprite_number: 0,
+    };
+
     world
         .create_entity()
+        .with(shadow_renderer)
         .with(renderer)
         .with(transform)
         .with(systems::entities::player_movement::PlayerMovement::new())
