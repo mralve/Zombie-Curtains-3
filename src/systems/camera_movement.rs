@@ -16,7 +16,7 @@ pub struct CameraMovement {
 
 impl CameraMovement {
     pub fn new() -> CameraMovement {
-        CameraMovement { butter: 5. }
+        CameraMovement { butter: 4. }
     }
 }
 
