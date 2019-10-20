@@ -5,8 +5,9 @@ use amethyst::{
     },
     assets::{PrefabData, PrefabLoader, PrefabLoaderSystemDesc, ProgressCounter, RonFormat},
     core::transform::{Transform, TransformBundle},
+    core::{math::Vector3, timing::Time},
     derive::PrefabData,
-    ecs::{prelude::Entity, Entities, Join, ReadStorage, WriteStorage},
+    ecs::{prelude::Entity, Component, Entities, Join, ReadStorage, VecStorage, WriteStorage},
     error::Error,
     prelude::{Builder, World, WorldExt},
     renderer::{
@@ -23,11 +24,21 @@ use amethyst::{
 
 /// Animation ids used in a AnimationSet
 #[derive(Eq, PartialOrd, PartialEq, Hash, Debug, Copy, Clone)]
-enum AnimationId {
+pub enum AnimationId {
     Idel,
     Walking,
     Running,
     Attack1,
     Attack2,
     Death,
+}
+
+#[derive(Default)]
+pub struct Animator {
+    pub last_x: f32,
+    pub distance_trigger: f32,
+}
+
+impl Component for Animator {
+    type Storage = VecStorage<Self>;
 }

@@ -32,6 +32,7 @@ impl SimpleState for ZombieCurtains {
         miscfunc::init_camera(world, &dimensions, 0.5);
 
         create_player(world, &dimensions);
+        create_zombie(world, &dimensions);
 
         let sprites = miscfunc::load_spritesheet(world, "textures/world_sprites");
 
@@ -89,6 +90,29 @@ pub fn create_player(world: &mut World, dimensions: &ScreenDimensions) {
             shadow_offset: -16.0,
         })
         .with(systems::entities::player_movement::PlayerMovement::new())
+        .with(systems::entities::sprite_flipper::SpriteFlipper::new())
+        .with(Removal::new(-1))
+        .build();
+}
+
+pub fn create_zombie(world: &mut World, dimensions: &ScreenDimensions) {
+    let sprites = miscfunc::load_spritesheet(world, "sprites/zombie/zombie");
+
+    let mut transform = Transform::default();
+    transform.set_translation_xyz(300., 300., 0.);
+
+    let renderer = SpriteRender {
+        sprite_sheet: sprites,
+        sprite_number: 0,
+    };
+
+    world
+        .create_entity()
+        .with(renderer)
+        .with(transform)
+        .with(systems::entities::E_Shadow {
+            shadow_offset: -16.0,
+        })
         .with(systems::entities::sprite_flipper::SpriteFlipper::new())
         .with(Removal::new(-1))
         .build();
