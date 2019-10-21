@@ -15,7 +15,7 @@ impl Component for PlayerMovement {
 
 impl PlayerMovement {
     pub fn new() -> PlayerMovement {
-        PlayerMovement { speed: 2. }
+        PlayerMovement { speed: 1.2 }
     }
 }
 
