@@ -9,8 +9,8 @@ use amethyst::{
     utils::removal::exec_removal,
     utils::removal::Removal,
     window::ScreenDimensions,
+    tiles::TileMap,
 };
-use amethyst_tiles::TileMap;
 
 use crate::miscfunc;
 use crate::systems;

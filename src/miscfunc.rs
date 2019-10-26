@@ -9,12 +9,12 @@ use amethyst::{
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
     utils::removal::Removal,
     window::ScreenDimensions,
+    tiles::{RenderTiles2D, Tile, TileMap},
 };
 use rand::{thread_rng, Rng};
 
 use crate::systems;
 
-use amethyst_tiles::{RenderTiles2D, Tile, TileMap};
 
 #[derive(Default, Clone)]
 pub struct BaseTile;

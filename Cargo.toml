@@ -14,8 +14,5 @@ stretch = "0.3.2"
 image = "0.22.3"
 derive-new = "0.5.8"
 rand = "0.7.2"
-amethyst_tiles = "0.1.3"
+amethyst = {git = "https://github.com/jaynus/amethyst.git", rev = "f05b96f", branch = "legion", features = ["vulkan", "no-slow-safety-checks", "tiles"]}
 
-[dependencies.amethyst]
-version = "0.13.2"
-features = ["vulkan", "no-slow-safety-checks"]

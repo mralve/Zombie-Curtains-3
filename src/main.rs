@@ -16,9 +16,8 @@ use amethyst::{
     },
     ui::{RenderUi, UiBundle},
     utils::application_root_dir,
+    tiles::RenderTiles2D,
 };
-
-use amethyst_tiles::RenderTiles2D;
 
 mod splashscreen;
 mod systems;
